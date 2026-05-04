@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Learning Outcomes - Grade 7 Math Progress</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="student-info">
+                <div class="student-avatar">
+                    <img src="https://via.placeholder.com/80x80/6366f1/ffffff?text=NJ" alt="Student Avatar" id="studentAvatar">
+                </div>
+                <div class="student-details">
+                    <h1>Nia Advani</h1>
+                    <p class="grade">Grade 7 • Math Report Card</p>
+                    <p class="subtitle">Learning Outcomes Overview</p>
+                </div>
+            </div>
+            <div class="overall-progress">
+                <div class="progress-circle" data-progress="42">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="progress-ring-circle" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="progress-text">
+                        <span class="percentage">42%</span>
+                        <span class="label">Overall Progress</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filter and View Controls -->
+        <div class="controls">
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="grid">
+                    <i class="fas fa-th-large"></i> Grid View
+                </button>
+                <button class="toggle-btn" data-view="list">
+                    <i class="fas fa-list"></i> List View
+                </button>
+                <div class="legend-inline">
+                    <div class="legend-item-inline">
+                        <div class="legend-dot mastered"></div>
+                        <span>Mastered</span>
+                    </div>
+                    <div class="legend-item-inline">
+                        <div class="legend-dot covered"></div>
+                        <span>Covered</span>
+                    </div>
+                    <div class="legend-item-inline">
+                        <div class="legend-dot attention"></div>
+                        <span>Needs Attention</span>
+                    </div>
+                    <div class="legend-item-inline">
+                        <div class="legend-dot not-started"></div>
+                        <span>Not Started</span>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-controls">
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">All Topics</option>
+                    <option value="mastered">Mastered</option>
+                    <option value="covered">Concept Covered</option>
+                    <option value="attention">Needs Attention</option>
+                    <option value="not-started">Not Started</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- Learning Outcomes Grid -->
+        <div class="learning-outcomes" id="learningOutcomes">
+            <!-- Ratios and Proportional Relationships -->
+            <div class="topic-card" data-status="covered" data-topic="ratios">
+                <div class="topic-header">
+                    <h3>Ratios and Proportional Relationships</h3>
+                    <div class="topic-actions">
+                        <button class="expand-btn" data-action="expand">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Skills</span>
+                        <span class="stat-value">28</span>
+                    </div>
+                    <div class="skills-breakdown-chart">
+                        <div class="chart-bar" data-status="mastered" data-count="12" style="width: 43%" title="12 Mastered Skills">
+                            <span class="bar-label">12</span>
+                        </div>
+                        <div class="chart-bar" data-status="covered" data-count="8" style="width: 29%" title="8 Concept Covered Skills">
+                            <span class="bar-label">8</span>
+                        </div>
+                        <div class="chart-bar" data-status="attention" data-count="5" style="width: 18%" title="5 Needs Attention Skills">
+                            <span class="bar-label">5</span>
+                        </div>
+                        <div class="chart-bar" data-status="not-started" data-count="3" style="width: 10%" title="3 Not Started Skills">
+                            <span class="bar-label">3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-list collapsed">
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.RP.A.1</span>
+                        <span class="skill-description">Compute unit rates associated with ratios of fractions, including ratios of lengths, areas and other quantities measured in like or different units.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.RP.A.2a</span>
+                        <span class="skill-description">Recognize and represent proportional relationships between quantities.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.RP.A.2b</span>
+                        <span class="skill-description">Identify the constant of proportionality (unit rate) in tables, graphs, equations, diagrams, and verbal descriptions.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.RP.A.2c</span>
+                        <span class="skill-description">Represent proportional relationships by equations.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.RP.A.2d</span>
+                        <span class="skill-description">Explain what a point (x, y) on the graph of a proportional relationship means in terms of the situation.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.RP.A.3</span>
+                        <span class="skill-description">Use proportional relationships to solve multistep ratio and percent problems.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Number System -->
+            <div class="topic-card" data-status="attention" data-topic="numbers">
+                <div class="topic-header">
+                    <h3>The Number System</h3>
+                    <div class="topic-actions">
+                        <button class="expand-btn" data-action="expand">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Skills</span>
+                        <span class="stat-value">32</span>
+                    </div>
+                    <div class="skills-breakdown-chart">
+                        <div class="chart-bar" data-status="mastered" data-count="8" style="width: 25%" title="8 Mastered Skills">
+                            <span class="bar-label">8</span>
+                        </div>
+                        <div class="chart-bar" data-status="covered" data-count="10" style="width: 31%" title="10 Concept Covered Skills">
+                            <span class="bar-label">10</span>
+                        </div>
+                        <div class="chart-bar" data-status="attention" data-count="9" style="width: 28%" title="9 Needs Attention Skills">
+                            <span class="bar-label">9</span>
+                        </div>
+                        <div class="chart-bar" data-status="not-started" data-count="5" style="width: 16%" title="5 Not Started Skills">
+                            <span class="bar-label">5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-list collapsed">
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.NS.A.1a</span>
+                        <span class="skill-description">Describe situations in which opposite quantities combine to make 0.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.NS.A.1b</span>
+                        <span class="skill-description">Understand p + q as the number located a distance |q| from p, in the positive or negative direction.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.NS.A.1c</span>
+                        <span class="skill-description">Understand subtraction of rational numbers as adding the additive inverse.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.NS.A.1d</span>
+                        <span class="skill-description">Apply properties of operations as strategies to add and subtract rational numbers.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.NS.A.2a</span>
+                        <span class="skill-description">Understand that multiplication is extended from fractions to rational numbers.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.NS.A.2b</span>
+                        <span class="skill-description">Understand that integers can be divided, provided that the divisor is not zero.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.NS.A.2c</span>
+                        <span class="skill-description">Apply properties of operations as strategies to multiply and divide rational numbers.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item not-started">
+                        <span class="skill-code">7.NS.A.3</span>
+                        <span class="skill-description">Solve real-world and mathematical problems involving the four operations with rational numbers.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expressions and Equations -->
+            <div class="topic-card" data-status="covered" data-topic="expressions">
+                <div class="topic-header">
+                    <h3>Expressions and Equations</h3>
+                    <div class="topic-actions">
+                        <button class="expand-btn" data-action="expand">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Skills</span>
+                        <span class="stat-value">35</span>
+                    </div>
+                    <div class="skills-breakdown-chart">
+                        <div class="chart-bar" data-status="mastered" data-count="15" style="width: 43%" title="15 Mastered Skills">
+                            <span class="bar-label">15</span>
+                        </div>
+                        <div class="chart-bar" data-status="covered" data-count="12" style="width: 34%" title="12 Concept Covered Skills">
+                            <span class="bar-label">12</span>
+                        </div>
+                        <div class="chart-bar" data-status="attention" data-count="6" style="width: 17%" title="6 Needs Attention Skills">
+                            <span class="bar-label">6</span>
+                        </div>
+                        <div class="chart-bar" data-status="not-started" data-count="2" style="width: 6%" title="2 Not Started Skills">
+                            <span class="bar-label">2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-list collapsed">
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.EE.A.1</span>
+                        <span class="skill-description">Apply properties of operations as strategies to add, subtract, factor, and expand linear expressions with rational coefficients.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.EE.A.2</span>
+                        <span class="skill-description">Understand that rewriting an expression in different forms in a problem context can shed light on the problem.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.EE.B.3</span>
+                        <span class="skill-description">Solve multi-step real-life and mathematical problems posed with positive and negative rational numbers.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.EE.B.4a</span>
+                        <span class="skill-description">Solve word problems leading to equations of the form px + q = r and p(x + q) = r.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.EE.B.4b</span>
+                        <span class="skill-description">Solve word problems leading to inequalities of the form px + q > r or px + q < r.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item not-started">
+                        <span class="skill-code">7.EE.B.4c</span>
+                        <span class="skill-description">Graph the solution set of the inequality and interpret it in the context of the problem.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Geometry -->
+            <div class="topic-card" data-status="mastered" data-topic="geometry">
+                <div class="topic-header">
+                    <h3>Geometry</h3>
+                    <div class="topic-actions">
+                        <button class="expand-btn" data-action="expand">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Skills</span>
+                        <span class="stat-value">24</span>
+                    </div>
+                    <div class="skills-breakdown-chart">
+                        <div class="chart-bar" data-status="mastered" data-count="18" style="width: 75%" title="18 Mastered Skills">
+                            <span class="bar-label">18</span>
+                        </div>
+                        <div class="chart-bar" data-status="covered" data-count="4" style="width: 17%" title="4 Concept Covered Skills">
+                            <span class="bar-label">4</span>
+                        </div>
+                        <div class="chart-bar" data-status="attention" data-count="2" style="width: 8%" title="2 Needs Attention Skills">
+                            <span class="bar-label">2</span>
+                        </div>
+                        <div class="chart-bar" data-status="not-started" data-count="0" style="width: 0%" title="0 Not Started Skills">
+                            <span class="bar-label">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-list collapsed">
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.G.A.1</span>
+                        <span class="skill-description">Solve problems involving scale drawings of geometric figures, including computing actual lengths and areas.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.G.A.2</span>
+                        <span class="skill-description">Draw (freehand, with ruler and protractor, and with technology) geometric shapes with given conditions.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item mastered">
+                        <span class="skill-code">7.G.A.3</span>
+                        <span class="skill-description">Describe the two-dimensional figures that result from slicing three-dimensional figures.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.G.B.4</span>
+                        <span class="skill-description">Know the formulas for the area and circumference of a circle and use them to solve problems.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.G.B.5</span>
+                        <span class="skill-description">Use facts about supplementary, complementary, vertical, and adjacent angles in a multi-step problem.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.G.B.6</span>
+                        <span class="skill-description">Solve real-world and mathematical problems involving area, volume and surface area of two- and three-dimensional objects.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics and Probability -->
+            <div class="topic-card" data-status="not-started" data-topic="statistics">
+                <div class="topic-header">
+                    <h3>Statistics and Probability</h3>
+                    <div class="topic-actions">
+                        <button class="expand-btn" data-action="expand">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Skills</span>
+                        <span class="stat-value">26</span>
+                    </div>
+                    <div class="skills-breakdown-chart">
+                        <div class="chart-bar" data-status="mastered" data-count="0" style="width: 0%" title="0 Mastered Skills">
+                            <span class="bar-label">0</span>
+                        </div>
+                        <div class="chart-bar" data-status="covered" data-count="3" style="width: 12%" title="3 Concept Covered Skills">
+                            <span class="bar-label">3</span>
+                        </div>
+                        <div class="chart-bar" data-status="attention" data-count="8" style="width: 31%" title="8 Needs Attention Skills">
+                            <span class="bar-label">8</span>
+                        </div>
+                        <div class="chart-bar" data-status="not-started" data-count="15" style="width: 57%" title="15 Not Started Skills">
+                            <span class="bar-label">15</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-list collapsed">
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.SP.A.1</span>
+                        <span class="skill-description">Understand that statistics can be used to gain information about a population by examining a sample.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item covered">
+                        <span class="skill-code">7.SP.A.2</span>
+                        <span class="skill-description">Use data from a random sample to draw inferences about a population with an unknown characteristic of interest.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.SP.B.3</span>
+                        <span class="skill-description">Informally assess the degree of visual overlap of two numerical data distributions.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item attention">
+                        <span class="skill-code">7.SP.B.4</span>
+                        <span class="skill-description">Use measures of center and measures of variability for numerical data from random samples.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item not-started">
+                        <span class="skill-code">7.SP.C.5</span>
+                        <span class="skill-description">Understand that the probability of a chance event is a number between 0 and 1.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item not-started">
+                        <span class="skill-code">7.SP.C.6</span>
+                        <span class="skill-description">Approximate the probability of a chance event by collecting data on the chance process.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item not-started">
+                        <span class="skill-code">7.SP.C.7a</span>
+                        <span class="skill-description">Develop a uniform probability model by assigning equal probability to all outcomes.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                    <div class="skill-item not-started">
+                        <span class="skill-code">7.SP.C.8a</span>
+                        <span class="skill-description">Understand that, just as with simple events, the probability of a compound event is the fraction of outcomes.</span>
+                        <div class="skill-status">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selection Summary -->
+        <div class="selection-summary" id="selectionSummary" style="display: none;">
+            <div class="summary-content">
+                <h4>Selected Topics</h4>
+                <div class="selected-items" id="selectedItems"></div>
+                <div class="summary-actions">
+                    <button class="action-btn primary" id="confirmPractice">Create Practice Session</button>
+                    <button class="action-btn secondary" id="confirmHomework">Create Homework Assignment</button>
+                    <button class="action-btn tertiary" id="clearSelection">Clear Selection</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Sections -->
+        <div class="assessment-sections">
+            <!-- Teacher's Remarks -->
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-number">1</span>
+                    <h3>Teacher's Remarks</h3>
+                </div>
+                
+                <div class="remarks-section">
+                    <div class="remark-item">
+                        <h4>Confidence</h4>
+                        <div class="selection-buttons">
+                            <button class="selection-btn">Low</button>
+                            <button class="selection-btn">Medium</button>
+                            <button class="selection-btn selected">High</button>
+                        </div>
+                    </div>
+                    
+                    <div class="remark-item">
+                        <h4>Emotional relationship with math</h4>
+                        <div class="selection-buttons">
+                            <button class="selection-btn">Dislikes</button>
+                            <button class="selection-btn">Scared</button>
+                            <button class="selection-btn">Indifferent</button>
+                            <button class="selection-btn">Confused</button>
+                            <button class="selection-btn selected">Likes</button>
+                            <button class="selection-btn">Loves</button>
+                        </div>
+                    </div>
+                    
+                    <div class="remark-item">
+                        <h4>Purpose of math classes</h4>
+                        <div class="selection-buttons">
+                            <button class="selection-btn">Cover basics</button>
+                            <button class="selection-btn selected">Cover current content</button>
+                            <button class="selection-btn selected">Go above and beyond</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cognitive Development -->
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-number">2</span>
+                    <h3>Cognitive Development</h3>
+                </div>
+                
+                <div class="cognitive-section">
+                    <div class="cognitive-item">
+                        <div class="cognitive-label">
+                            <span class="cognitive-icon">🧠</span>
+                            <span>Memory and Recall</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%; background-color: #10b981;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="cognitive-item">
+                        <div class="cognitive-label">
+                            <span class="cognitive-icon">📋</span>
+                            <span>Organization of Work</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%; background-color: #f59e0b;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="cognitive-item">
+                        <div class="cognitive-label">
+                            <span class="cognitive-icon">🎯</span>
+                            <span>Ability to focus</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 90%; background-color: #10b981;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="cognitive-item">
+                        <div class="cognitive-label">
+                            <span class="cognitive-icon">🔍</span>
+                            <span>Ability to self serve answers</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%; background-color: #f59e0b;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="cognitive-item">
+                        <div class="cognitive-label">
+                            <span class="cognitive-icon">⚠️</span>
+                            <span>Avoiding careless mistakes</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%; background-color: #ef4444;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="cognitive-item">
+                        <div class="cognitive-label">
+                            <span class="cognitive-icon">💪</span>
+                            <span>Grit/Resilience</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 80%; background-color: #10b981;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
