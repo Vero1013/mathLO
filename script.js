@@ -2,7 +2,7 @@
 class LearningOutcomesApp {
     constructor() {
         this.selectedTopics = new Set();
-        this.currentView = 'grid';
+        this.selectedSkills = new Set();
         this.currentFilter = 'all';
         this.init();
     }
@@ -15,11 +15,6 @@ class LearningOutcomesApp {
     }
 
     setupEventListeners() {
-        // View toggle buttons
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.handleViewToggle(e));
-        });
-
         // Filter dropdown
         document.getElementById('statusFilter').addEventListener('change', (e) => {
             this.handleFilterChange(e.target.value);
@@ -27,6 +22,15 @@ class LearningOutcomesApp {
 
         // Topic card interactions
         document.querySelectorAll('.topic-card').forEach(card => {
+            // Checkbox interactions
+            const checkbox = card.querySelector('.topic-select-checkbox');
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    this.handleTopicSelection(card, checkbox.checked);
+                });
+            }
+
             // Expand button
             const expandBtn = card.querySelector('.expand-btn');
             if (expandBtn) {
@@ -47,9 +51,22 @@ class LearningOutcomesApp {
                 });
             });
 
-            // Card click to expand
-            card.addEventListener('click', () => {
-                this.toggleSkillsList(card);
+            // Header click to expand (only header area, not entire card)
+            const header = card.querySelector('.topic-header h3');
+            if (header) {
+                header.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleSkillsList(card);
+                });
+            }
+
+            // Skill checkbox interactions
+            const skillCheckboxes = card.querySelectorAll('.skill-select-checkbox');
+            skillCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    this.handleSkillSelection(checkbox, checkbox.checked);
+                });
             });
         });
 
@@ -76,26 +93,58 @@ class LearningOutcomesApp {
             });
         }
 
+        // Unit action buttons
+        document.querySelectorAll('.unit-worksheet-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const unit = btn.dataset.unit;
+                this.createUnitWorksheet(unit);
+            });
+        });
+
+
+        // Global action bar buttons
+        const createSelectedBtn = document.getElementById('createSelectedWorksheet');
+        const clearSkillBtn = document.getElementById('clearSkillSelection');
+        
+        if (createSelectedBtn) {
+            createSelectedBtn.addEventListener('click', () => {
+                this.createWorksheetForSelectedSkills();
+            });
+        }
+        
+        if (clearSkillBtn) {
+            clearSkillBtn.addEventListener('click', () => {
+                this.clearAllSkillSelections();
+            });
+        }
+
+        // Global worksheet button
+        const globalWorksheetBtn = document.getElementById('globalCreateWorksheet');
+        if (globalWorksheetBtn) {
+            globalWorksheetBtn.addEventListener('click', () => {
+                this.createWorksheetForSelectedSkills();
+            });
+        }
+
+        // Unit test worksheet button
+        const unitTestBtn = document.getElementById('unitTestWorksheet');
+        if (unitTestBtn) {
+            unitTestBtn.addEventListener('click', () => {
+                this.showUnitTestModal();
+            });
+        }
+
+        // Export button
+        const exportBtn = document.getElementById('exportBtn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                this.exportProgress();
+            });
+        }
+
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
-    }
-
-    handleViewToggle(e) {
-        const viewType = e.target.closest('.toggle-btn').dataset.view;
-        
-        // Update button states
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        e.target.closest('.toggle-btn').classList.add('active');
-
-        // Update grid layout
-        const grid = document.getElementById('learningOutcomes');
-        grid.className = `learning-outcomes ${viewType}-view`;
-        this.currentView = viewType;
-
-        // Animate transition
-        this.animateViewChange();
     }
 
     handleFilterChange(filterValue) {
@@ -149,24 +198,352 @@ class LearningOutcomesApp {
         this.updateVisibleCount();
     }
 
-    toggleTopicSelection(card) {
+    handleTopicSelection(card, isSelected) {
         const topicId = card.dataset.topic;
-        const selectBtn = card.querySelector('.select-btn');
+        const checkbox = card.querySelector('.topic-select-checkbox');
         
-        if (this.selectedTopics.has(topicId)) {
-            this.selectedTopics.delete(topicId);
-            card.classList.remove('selected');
-            selectBtn.classList.remove('selected');
-            selectBtn.innerHTML = '<i class="fas fa-check"></i>';
-        } else {
+        if (isSelected) {
             this.selectedTopics.add(topicId);
             card.classList.add('selected');
-            selectBtn.classList.add('selected');
-            selectBtn.innerHTML = '<i class="fas fa-check"></i>';
+            checkbox.checked = true;
+        } else {
+            this.selectedTopics.delete(topicId);
+            card.classList.remove('selected');
+            checkbox.checked = false;
         }
 
         this.updateSelectionSummary();
         this.animateSelection(card);
+    }
+
+    toggleTopicSelection(card) {
+        const topicId = card.dataset.topic;
+        const checkbox = card.querySelector('.topic-select-checkbox');
+        const isCurrentlySelected = this.selectedTopics.has(topicId);
+        
+        this.handleTopicSelection(card, !isCurrentlySelected);
+    }
+
+    handleSkillSelection(checkbox, isSelected) {
+        const skillId = checkbox.dataset.skillId;
+        const skillItem = checkbox.closest('.skill-item');
+        
+        if (isSelected) {
+            this.selectedSkills.add(skillId);
+            skillItem.classList.add('selected');
+            checkbox.checked = true;
+        } else {
+            this.selectedSkills.delete(skillId);
+            skillItem.classList.remove('selected');
+            checkbox.checked = false;
+        }
+
+        this.updateSkillSelectionSummary();
+        console.log('Selected skills:', Array.from(this.selectedSkills));
+    }
+
+    updateSkillSelectionSummary() {
+        const selectedCount = this.selectedSkills.size;
+        const actionBar = document.getElementById('skillsActionBar');
+        const countElement = document.getElementById('selectedSkillsCount');
+        
+        if (selectedCount > 0) {
+            // Show action bar
+            actionBar.style.display = 'block';
+            actionBar.classList.add('show');
+            
+            // Update count text
+            const skillText = selectedCount === 1 ? 'skill' : 'skills';
+            countElement.textContent = `${selectedCount} ${skillText} selected`;
+        } else {
+            // Hide action bar
+            actionBar.classList.remove('show');
+            setTimeout(() => {
+                if (this.selectedSkills.size === 0) {
+                    actionBar.style.display = 'none';
+                }
+            }, 300);
+        }
+        
+        console.log(`${selectedCount} skills selected`);
+    }
+
+    clearAllSkillSelections() {
+        this.selectedSkills.forEach(skillId => {
+            const checkbox = document.querySelector(`[data-skill-id="${skillId}"]`);
+            if (checkbox) {
+                const skillItem = checkbox.closest('.skill-item');
+                skillItem.classList.remove('selected');
+                checkbox.checked = false;
+            }
+        });
+        
+        this.selectedSkills.clear();
+        this.updateSkillSelectionSummary();
+    }
+
+    createUnitWorksheet(unit) {
+        const unitName = this.getUnitName(unit);
+        this.showNotification(`Creating worksheet for ${unitName}...`, 'info');
+        
+        // Simulate worksheet creation
+        setTimeout(() => {
+            this.showNotification(`Worksheet for "${unitName}" created successfully!`, 'success');
+        }, 1500);
+        
+        console.log('Creating unit worksheet for:', unit);
+    }
+
+
+    createWorksheetForSelectedSkills() {
+        const selectedCount = this.selectedSkills.size;
+        if (selectedCount === 0) {
+            this.showNotification('No skills selected. Please select skills first.', 'warning');
+            return;
+        }
+        
+        const skillText = selectedCount === 1 ? 'skill' : 'skills';
+        this.showNotification(`Creating worksheet for ${selectedCount} selected ${skillText}...`, 'info');
+        
+        // Simulate worksheet creation
+        setTimeout(() => {
+            this.showNotification(`Worksheet with ${selectedCount} ${skillText} created successfully!`, 'success');
+            // Optionally clear selection after creation
+            // this.clearAllSkillSelections();
+        }, 1500);
+        
+        console.log('Creating worksheet for selected skills:', Array.from(this.selectedSkills));
+    }
+
+    getUnitName(unit) {
+        const unitNames = {
+            'ratios': 'Ratios and Proportional Relationships',
+            'numbers': 'The Number System',
+            'expressions': 'Expressions and Equations',
+            'geometry': 'Geometry',
+            'statistics': 'Statistics and Probability'
+        };
+        return unitNames[unit] || unit;
+    }
+
+    showUnitTestModal() {
+        // Create unit test modal
+        const modal = document.createElement('div');
+        modal.className = 'worksheet-modal';
+        modal.innerHTML = `
+            <div class="worksheet-modal-content">
+                <div class="worksheet-header">
+                    <h3>Create Unit Test Worksheet</h3>
+                    <button class="close-btn" data-action="close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="worksheet-body">
+                    <p class="worksheet-instruction">Select a topic to create a comprehensive worksheet for the entire unit:</p>
+                    <div class="unit-selector">
+                        <div class="unit-option" data-unit="ratios">
+                            <input type="radio" id="unit-ratios" name="selectedUnit" value="ratios">
+                            <label for="unit-ratios">
+                                <span class="unit-title">Ratios and Proportional Relationships</span>
+                                <span class="unit-skills">6 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="numbers">
+                            <input type="radio" id="unit-numbers" name="selectedUnit" value="numbers">
+                            <label for="unit-numbers">
+                                <span class="unit-title">The Number System</span>
+                                <span class="unit-skills">8 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="expressions">
+                            <input type="radio" id="unit-expressions" name="selectedUnit" value="expressions">
+                            <label for="unit-expressions">
+                                <span class="unit-title">Expressions and Equations</span>
+                                <span class="unit-skills">6 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="geometry">
+                            <input type="radio" id="unit-geometry" name="selectedUnit" value="geometry">
+                            <label for="unit-geometry">
+                                <span class="unit-title">Geometry</span>
+                                <span class="unit-skills">6 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="statistics">
+                            <input type="radio" id="unit-statistics" name="selectedUnit" value="statistics">
+                            <label for="unit-statistics">
+                                <span class="unit-title">Statistics and Probability</span>
+                                <span class="unit-skills">8 skills total</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="worksheet-footer">
+                    <button class="action-btn tertiary" data-action="cancel">Cancel</button>
+                    <button class="action-btn primary" data-action="create-unit-test">Create Unit Test Worksheet</button>
+                </div>
+            </div>
+        `;
+        
+        // Add to body
+        document.body.appendChild(modal);
+        
+        // Add event listeners
+        modal.querySelector('[data-action="close"]').addEventListener('click', () => {
+            this.closeWorksheetModal(modal);
+        });
+        
+        modal.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+            this.closeWorksheetModal(modal);
+        });
+        
+        modal.querySelector('[data-action="create-unit-test"]').addEventListener('click', () => {
+            this.createUnitTestWorksheet(modal);
+        });
+        
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.closeWorksheetModal(modal);
+            }
+        });
+        
+        // Animate in
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 100);
+    }
+
+    createUnitTestWorksheet(modal) {
+        const selectedUnit = modal.querySelector('input[name="selectedUnit"]:checked');
+        
+        if (!selectedUnit) {
+            this.showNotification('Please select a unit to create the worksheet.', 'warning');
+            return;
+        }
+        
+        const unitValue = selectedUnit.value;
+        const unitName = this.getUnitName(unitValue);
+        
+        this.showNotification(`Creating unit test worksheet for ${unitName}...`, 'info');
+        
+        // Simulate worksheet generation
+        setTimeout(() => {
+            this.showNotification(`Unit test worksheet for "${unitName}" created successfully!`, 'success');
+            this.closeWorksheetModal(modal);
+            
+            console.log('Unit test worksheet created for:', unitValue);
+        }, 1500);
+    }
+
+    showUnitTestModal() {
+        // Create unit test modal
+        const modal = document.createElement('div');
+        modal.className = 'worksheet-modal';
+        modal.innerHTML = `
+            <div class="worksheet-modal-content">
+                <div class="worksheet-header">
+                    <h3>Create Unit Test Worksheet</h3>
+                    <button class="close-btn" data-action="close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="worksheet-body">
+                    <p class="worksheet-instruction">Select a topic to create a comprehensive worksheet for the entire unit:</p>
+                    <div class="unit-selector">
+                        <div class="unit-option" data-unit="ratios">
+                            <input type="radio" id="unit-ratios" name="selectedUnit" value="ratios">
+                            <label for="unit-ratios">
+                                <span class="unit-title">Ratios and Proportional Relationships</span>
+                                <span class="unit-skills">6 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="numbers">
+                            <input type="radio" id="unit-numbers" name="selectedUnit" value="numbers">
+                            <label for="unit-numbers">
+                                <span class="unit-title">The Number System</span>
+                                <span class="unit-skills">8 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="expressions">
+                            <input type="radio" id="unit-expressions" name="selectedUnit" value="expressions">
+                            <label for="unit-expressions">
+                                <span class="unit-title">Expressions and Equations</span>
+                                <span class="unit-skills">6 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="geometry">
+                            <input type="radio" id="unit-geometry" name="selectedUnit" value="geometry">
+                            <label for="unit-geometry">
+                                <span class="unit-title">Geometry</span>
+                                <span class="unit-skills">6 skills total</span>
+                            </label>
+                        </div>
+                        <div class="unit-option" data-unit="statistics">
+                            <input type="radio" id="unit-statistics" name="selectedUnit" value="statistics">
+                            <label for="unit-statistics">
+                                <span class="unit-title">Statistics and Probability</span>
+                                <span class="unit-skills">8 skills total</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="worksheet-footer">
+                    <button class="action-btn tertiary" data-action="cancel">Cancel</button>
+                    <button class="action-btn primary" data-action="create-unit-test">Create Unit Test Worksheet</button>
+                </div>
+            </div>
+        `;
+        
+        // Add to body
+        document.body.appendChild(modal);
+        
+        // Add event listeners
+        modal.querySelector('[data-action="close"]').addEventListener('click', () => {
+            this.closeWorksheetModal(modal);
+        });
+        
+        modal.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+            this.closeWorksheetModal(modal);
+        });
+        
+        modal.querySelector('[data-action="create-unit-test"]').addEventListener('click', () => {
+            this.createUnitTestWorksheet(modal);
+        });
+        
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                this.closeWorksheetModal(modal);
+            }
+        });
+        
+        // Animate in
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 100);
+    }
+
+    createUnitTestWorksheet(modal) {
+        const selectedUnit = modal.querySelector('input[name="selectedUnit"]:checked');
+        
+        if (!selectedUnit) {
+            this.showNotification('Please select a unit to create the worksheet.', 'warning');
+            return;
+        }
+        
+        const unitValue = selectedUnit.value;
+        const unitName = this.getUnitName(unitValue);
+        
+        this.showNotification(`Creating unit test worksheet for ${unitName}...`, 'info');
+        
+        // Simulate worksheet generation
+        setTimeout(() => {
+            this.showNotification(`Unit test worksheet for "${unitName}" created successfully!`, 'success');
+            this.closeWorksheetModal(modal);
+            
+            console.log('Unit test worksheet created for:', unitValue);
+        }, 1500);
     }
 
     toggleSkillsList(card) {
@@ -201,50 +578,38 @@ class LearningOutcomesApp {
             return;
         }
 
-        // Toggle active state
-        const isActive = bar.classList.contains('active');
-        console.log('Is active before toggle:', isActive); // Debug log
+        // Always clear all active bars first and activate this one
+        this.clearChartBarFilters(card);
         
-        if (!isActive) {
-            // Clear all active bars in this card first
-            this.clearChartBarFilters(card);
-            
-            // Activate this bar and filter skills
-            bar.classList.add('active');
-            console.log('Bar activated, filtering skills by:', status); // Debug log
-            
-            // ALWAYS ensure skills list is expanded first
-            const skillsList = card.querySelector('.skills-list');
-            const expandBtn = card.querySelector('.expand-btn');
-            
-            console.log('Skills list found:', !!skillsList); // Debug log
-            console.log('Skills list classes before:', skillsList ? skillsList.className : 'none'); // Debug log
-            
-            if (skillsList) {
-                skillsList.classList.remove('collapsed');
-                skillsList.classList.add('expanded');
-                if (expandBtn) {
-                    expandBtn.classList.add('expanded');
-                }
-                this.animateExpansion(skillsList);
-                console.log('Skills list expanded'); // Debug log
+        // Activate this bar and filter skills
+        bar.classList.add('active');
+        console.log('Bar activated, filtering skills by:', status); // Debug log
+        
+        // ALWAYS ensure skills list is expanded first
+        const skillsList = card.querySelector('.skills-list');
+        const expandBtn = card.querySelector('.expand-btn');
+        
+        console.log('Skills list found:', !!skillsList); // Debug log
+        console.log('Skills list classes before:', skillsList ? skillsList.className : 'none'); // Debug log
+        
+        if (skillsList) {
+            skillsList.classList.remove('collapsed');
+            skillsList.classList.add('expanded');
+            if (expandBtn) {
+                expandBtn.classList.add('expanded');
             }
-            
-            // Then filter the skills
-            this.filterSkillsByStatus(card, status);
-            
-            // Show create worksheet button for ALL skill categories
-            console.log(`Showing worksheet button for ${status} skills`); // Debug log
-            this.showCreateWorksheetButton(card, status);
-            
-            this.showNotification(`Showing ${count} ${this.getStatusLabel(status)} skills`, 'info');
-        } else {
-            // Clear filters and show all skills
-            console.log('Clearing filters and showing all skills'); // Debug log
-            this.clearChartBarFilters(card);
-            this.showAllSkills(card);
-            this.showNotification('Showing all skills', 'info');
+            this.animateExpansion(skillsList);
+            console.log('Skills list expanded'); // Debug log
         }
+        
+        // Then filter the skills
+        this.filterSkillsByStatus(card, status);
+        
+        // Show create worksheet button for ALL skill categories
+        console.log(`Showing worksheet button for ${status} skills`); // Debug log
+        this.showCreateWorksheetButton(card, status);
+        
+        this.showNotification(`Showing ${count} ${this.getStatusLabel(status)} skills`, 'info');
     }
 
     clearChartBarFilters(card) {
@@ -518,14 +883,17 @@ class LearningOutcomesApp {
 
     removeSelection(topicId) {
         const card = document.querySelector(`[data-topic="${topicId}"]`);
-        this.toggleTopicSelection(card);
+        this.handleTopicSelection(card, false);
     }
 
     clearAllSelections() {
         this.selectedTopics.forEach(topicId => {
             const card = document.querySelector(`[data-topic="${topicId}"]`);
+            const checkbox = card.querySelector('.topic-select-checkbox');
             card.classList.remove('selected');
-            card.querySelector('.select-btn').classList.remove('selected');
+            if (checkbox) {
+                checkbox.checked = false;
+            }
         });
         
         this.selectedTopics.clear();
@@ -592,7 +960,7 @@ class LearningOutcomesApp {
             
             // Get mastered skills from the bar chart data
             const masteredBar = card.querySelector('.chart-bar[data-status="mastered"]');
-            const topicMasteredSkills = masteredBar ? parseInt(masteredBar.textContent) : 0;
+            const topicMasteredSkills = masteredBar ? parseInt(masteredBar.dataset.count) : 0;
             
             console.log(`Topic: ${card.dataset.topic}, Total: ${topicTotalSkills}, Mastered: ${topicMasteredSkills}`);
             
@@ -700,7 +1068,7 @@ class LearningOutcomesApp {
             
             // Get mastered skills from the bar chart data
             const masteredBar = card.querySelector('.chart-bar[data-status="mastered"]');
-            const masteredSkills = masteredBar ? parseInt(masteredBar.textContent) : 0;
+            const masteredSkills = masteredBar ? parseInt(masteredBar.dataset.count) : 0;
             
             topicData.push({
                 name: topicName,
@@ -781,20 +1149,6 @@ class LearningOutcomesApp {
             setTimeout(() => {
                 card.classList.add('fade-in');
             }, index * 100);
-        });
-    }
-
-    animateViewChange() {
-        const cards = document.querySelectorAll('.topic-card');
-        cards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-                card.style.transition = 'all 0.3s ease';
-            }, index * 50);
         });
     }
 
@@ -890,7 +1244,7 @@ class LearningOutcomesApp {
         visibleCards.forEach(card => {
             const topicId = card.dataset.topic;
             if (!this.selectedTopics.has(topicId)) {
-                this.toggleTopicSelection(card);
+                this.handleTopicSelection(card, true);
             }
         });
     }
@@ -1069,7 +1423,7 @@ let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        app.animateViewChange();
+        // Resize handling if needed
     }, 250);
 });
 
