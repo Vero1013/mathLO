@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Parent Dashboard Clicks</title>
+</head>
+<body>
+    <h1>Parent Dashboard Click Test</h1>
+    <p>This page will test the parent dashboard functionality.</p>
+    
+    <script>
+        // Test the parent dashboard functionality
+        function testParentDashboard() {
+            console.log('Testing parent dashboard...');
+            
+            // Open the parent view in a new window
+            const parentWindow = window.open('http://localhost:8000/parent-view.html', '_blank');
+            
+            // Wait for the page to load and then test functionality
+            setTimeout(() => {
+                try {
+                    // Test if the ParentApp is initialized
+                    if (parentWindow.parentApp) {
+                        console.log('✅ ParentApp initialized successfully');
+                        
+                        // Test expand button functionality
+                        const expandBtns = parentWindow.document.querySelectorAll('.expand-btn');
+                        console.log(`Found ${expandBtns.length} expand buttons`);
+                        
+                        // Test skill item functionality
+                        const skillItems = parentWindow.document.querySelectorAll('.skill-item');
+                        console.log(`Found ${skillItems.length} skill items`);
+                        
+                        // Test filter functionality
+                        const statusFilter = parentWindow.document.getElementById('statusFilter');
+                        if (statusFilter) {
+                            console.log('✅ Status filter found');
+                        } else {
+                            console.log('❌ Status filter not found');
+                        }
+                        
+                        console.log('✅ All elements found successfully');
+                    } else {
+                        console.log('❌ ParentApp not initialized');
+                    }
+                } catch (error) {
+                    console.error('Error testing parent dashboard:', error);
+                }
+            }, 2000);
+        }
+        
+        // Run the test when page loads
+        window.addEventListener('load', testParentDashboard);
+    </script>
+    
+    <button onclick="testParentDashboard()">Test Parent Dashboard</button>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nia's Math Progress - Parent View (Fixed)</title>
+    <link rel="stylesheet" href="parent-styles.css?v=13">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .debug-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            border: 2px solid #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 11px;
+            max-width: 250px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .debug-panel h4 {
+            margin: 0 0 5px 0;
+            color: #007bff;
+            font-size: 12px;
+        }
+        .debug-panel .status {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .debug-panel .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-panel">
+        <h4>🔧 Debug Status</h4>
+        <div id="debugStatus">Loading...</div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-left">
+                <div class="view-switcher">
+                    <span class="current-view">Parent View (Fixed)</span>
+                    <a href="index.html" class="view-link teacher-view">
+                        <i class="fas fa-chalkboard-teacher"></i> Teacher View
+                    </a>
+                </div>
+                <div class="filter-controls">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">All Skills</option>
+                        <option value="mastered">Doing Great</option>
+                        <option value="covered">Practiced</option>
+                        <option value="attention">Needs Practice</option>
+                        <option value="not-started">Not Started</option>
+                    </select>
+                </div>
+                
+                <!-- Legend -->
+                <div class="header-legend">
+                    <span class="legend-title-compact">KEY:</span>
+                    <div class="legend-items-horizontal">
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol mastered">✅</span>
+                            <span class="legend-label-compact">Doing Great</span>
+                        </div>
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol covered">📖</span>
+                            <span class="legend-label-compact">Practiced</span>
+                        </div>
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol attention">⚠️</span>
+                            <span class="legend-label-compact">Needs Practice</span>
+                        </div>
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol not-started">⭕</span>
+                            <span class="legend-label-compact">Not Started</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="student-info">
+                <div class="student-avatar">
+                    <div class="avatar-emoji">👩🏻‍🎓</div>
+                </div>
+                <div class="student-details">
+                    <h1>Nia's Progress</h1>
+                    <p class="grade">Grade 7 • Math Report</p>
+                    <p class="subtitle">See what Nia has been working on</p>
+                </div>
+            </div>
+            
+            <div class="overall-progress">
+                <div class="progress-circle" data-progress="73">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="progress-ring-circle" cx="60" cy="60" r="50"></circle>
+                        <circle class="progress-ring-circle progress-fill" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="progress-text">
+                        <span class="percentage">73%</span>
+                        <span class="label">Overall</span>
+                    </div>
+                </div>
+                
+                <!-- Topic List with Colors -->
+                <div class="topic-list-header">
+                    <div class="topic-item" data-status="covered">
+                        <span class="topic-indicator covered"></span>
+                        <span class="topic-name">Ratios and Proportional Relationships</span>
+                    </div>
+                    <div class="topic-item" data-status="attention">
+                        <span class="topic-indicator attention"></span>
+                        <span class="topic-name">The Number System</span>
+                    </div>
+                    <div class="topic-item" data-status="covered">
+                        <span class="topic-indicator covered"></span>
+                        <span class="topic-name">Expressions and Equations</span>
+                    </div>
+                    <div class="topic-item" data-status="mastered">
+                        <span class="topic-indicator mastered"></span>
+                        <span class="topic-name">Geometry</span>
+                    </div>
+                    <div class="topic-item" data-status="not-started">
+                        <span class="topic-indicator not-started"></span>
+                        <span class="topic-name">Statistics and Probability</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Learning Outcomes List -->
+            <div class="learning-outcomes" id="learningOutcomes">
+                <!-- Ratios and Proportional Relationships -->
+                <div class="topic-card" data-status="covered" data-topic="ratios">
+                    <div class="topic-header">
+                        <span class="topic-indicator covered"></span>
+                        <h3>Ratios and Proportional Relationships</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn expanded" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">6</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="mastered" data-count="3" style="width: 50%" title="3 Skills Doing Great">
+                                <span class="bar-label">✅3</span>
+                            </div>
+                            <div class="chart-bar" data-status="covered" data-count="2" style="width: 33%" title="2 Skills Practiced">
+                                <span class="bar-label">📖2</span>
+                            </div>
+                            <div class="chart-bar" data-status="attention" data-count="1" style="width: 17%" title="1 Skill Needs Practice">
+                                <span class="bar-label">⚠️1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list expanded">
+                        <div class="skill-item mastered" data-skill-id="7.RP.A.1" onclick="showQuestions(this)">
+                            <span class="skill-code">7.RP.A.1</span>
+                            <span class="skill-description">Compute unit rates with fractions</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.RP.A.2a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.RP.A.2a</span>
+                            <span class="skill-description">Recognize proportional relationships</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.RP.A.2b" onclick="showQuestions(this)">
+                            <span class="skill-code">7.RP.A.2b</span>
+                            <span class="skill-description">Identify constant of proportionality</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.RP.A.2c" onclick="showQuestions(this)">
+                            <span class="skill-code">7.RP.A.2c</span>
+                            <span class="skill-description">Represent relationships by equations</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.RP.A.2d" onclick="showQuestions(this)">
+                            <span class="skill-code">7.RP.A.2d</span>
+                            <span class="skill-description">Explain points on proportional graphs</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.RP.A.3" onclick="showQuestions(this)">
+                            <span class="skill-code">7.RP.A.3</span>
+                            <span class="skill-description">Solve ratio and percent problems</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Number System -->
+                <div class="topic-card" data-status="attention" data-topic="numbers">
+                    <div class="topic-header">
+                        <span class="topic-indicator attention"></span>
+                        <h3>The Number System</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">8</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="mastered" data-count="2" style="width: 25%" title="2 Skills Doing Great">
+                                <span class="bar-label">✅2</span>
+                            </div>
+                            <div class="chart-bar" data-status="covered" data-count="3" style="width: 37%" title="3 Skills Practiced">
+                                <span class="bar-label">📖3</span>
+                            </div>
+                            <div class="chart-bar" data-status="attention" data-count="2" style="width: 25%" title="2 Skills Need Practice">
+                                <span class="bar-label">⚠️2</span>
+                            </div>
+                            <div class="chart-bar" data-status="not-started" data-count="1" style="width: 13%" title="1 Skill Not Started">
+                                <span class="bar-label">⭕1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list collapsed">
+                        <div class="skill-item mastered" data-skill-id="7.NS.A.1a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1a</span>
+                            <span class="skill-description">Opposite quantities combine to make 0</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.NS.A.1b" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1b</span>
+                            <span class="skill-description">Understanding p + q on number line</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.NS.A.1c" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1c</span>
+                            <span class="skill-description">Subtraction as adding additive inverse</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.NS.A.1d" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1d</span>
+                            <span class="skill-description">Properties for adding rational numbers</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.NS.A.2a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.2a</span>
+                            <span class="skill-description">Multiplication with rational numbers</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.NS.A.2b" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.2b</span>
+                            <span class="skill-description">Division of integers</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.NS.A.2c" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.2c</span>
+                            <span class="skill-description">Properties for multiplying rational numbers</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.NS.A.3" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.3</span>
+                            <span class="skill-description">Four operations with rational numbers</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Panel -->
+            <div class="questions-panel" id="questionsPanel">
+                <div class="panel-header">
+                    <h3>Questions Nia Worked On</h3>
+                    <button class="close-panel" onclick="closeQuestionsPanel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <div class="no-selection">
+                        <div class="no-selection-icon">📝</div>
+                        <p>Click on any skill to see the questions Nia has worked on</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Debug status tracking
+        const debugStatus = document.getElementById('debugStatus');
+        
+        function updateDebugStatus(message, isError = false) {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = isError ? 'error' : 'status';
+            debugStatus.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            debugStatus.scrollTop = debugStatus.scrollHeight;
+            console.log(message);
+        }
+        
+        // Override console methods to show in debug panel
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            updateDebugStatus(args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            updateDebugStatus(args.join(' '), true);
+        };
+        
+        updateDebugStatus('Loading fixed parent view...');
+    </script>
+    <script src="parent-script-fixed.js"></script>
+</body>
+</html>

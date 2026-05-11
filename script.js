@@ -1082,29 +1082,8 @@ class LearningOutcomesApp {
     }
 
     createProgressLegend(topicData) {
-        const legendContainer = document.querySelector('.progress-legend');
-        if (!legendContainer) {
-            // Create legend container if it doesn't exist
-            const progressContainer = document.querySelector('.overall-progress');
-            const legend = document.createElement('div');
-            legend.className = 'progress-legend';
-            progressContainer.appendChild(legend);
-        }
-
-        const legend = document.querySelector('.progress-legend');
-        legend.innerHTML = '';
-
-        // Show all topics in the legend without skill counts
-        topicData.forEach((topic, index) => {
-            const legendItem = document.createElement('div');
-            legendItem.className = 'legend-item';
-            const fullTopicName = this.getFullTopicName(topic.name);
-            legendItem.innerHTML = `
-                <div class="legend-color" style="background-color: ${this.getTopicColor(index)}"></div>
-                <span class="legend-text">${fullTopicName}</span>
-            `;
-            legend.appendChild(legendItem);
-        });
+        // Progress legend creation disabled to avoid duplicate topic list
+        // The topic list with color indicators is already present in HTML
     }
 
     getFullTopicName(shortName) {

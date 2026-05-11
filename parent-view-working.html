@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nia's Math Progress - Parent View (Working)</title>
+    <link rel="stylesheet" href="parent-styles.css?v=13">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+                transform: translateY(0);
+            }
+        }
+        .main-content {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .content-column {
+            flex: 1;
+            min-width: 0;
+        }
+        .questions-panel {
+            width: 400px;
+            min-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            max-height: 80vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+            flex-shrink: 0;
+        }
+        .questions-panel.hidden {
+            display: block;
+        }
+        .skill-item:hover {
+            background: rgba(99, 102, 241, 0.06);
+            transform: translateX(2px);
+        }
+        .skill-item.selected {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid #6366f1;
+        }
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+        
+        /* Section styling - compact */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .section-number {
+            background: #6366f1;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .section-header h3 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        /* Compact card styling */
+        .section-card {
+            padding: 15px !important;
+        }
+        
+        .teacher-remarks-content {
+            font-size: 0.85rem !important;
+            line-height: 1.5 !important;
+        }
+        
+        .teacher-remarks-content p {
+            margin: 0 0 10px 0 !important;
+        }
+        
+        /* Cognitive development styling - horizontal layout */
+        .cognitive-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .cognitive-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .cognitive-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.85rem;
+            min-width: 160px;
+            flex-shrink: 0;
+        }
+        
+        .cognitive-icon {
+            font-size: 0.9rem;
+            width: 16px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Compact topic cards */
+        .topic-card {
+            margin-bottom: 15px !important;
+        }
+        
+        .topic-header h3 {
+            font-size: 1rem !important;
+        }
+        
+        .skill-item {
+            padding: 8px 12px !important;
+            font-size: 0.85rem !important;
+        }
+        
+        .skill-code {
+            font-size: 0.75rem !important;
+        }
+        
+        .skill-description {
+            font-size: 0.85rem !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-left">
+                <div class="view-switcher">
+                    <span class="current-view">Parent View (Working)</span>
+                    <a href="index.html" class="view-link teacher-view">
+                        <i class="fas fa-chalkboard-teacher"></i> Teacher View
+                    </a>
+                    <a href="student-view.html" class="view-link student-view">
+                        <i class="fas fa-user-graduate"></i> Student View
+                    </a>
+                </div>
+                <div class="filter-controls">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">All Skills</option>
+                        <option value="mastered">Doing Great</option>
+                        <option value="covered">Practiced</option>
+                        <option value="attention">Needs Practice</option>
+                        <option value="not-started">Not Started</option>
+                    </select>
+                </div>
+                
+                <!-- Legend -->
+                <div class="header-legend">
+                    <span class="legend-title-compact">KEY:</span>
+                    <div class="legend-items-horizontal">
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol mastered">✅</span>
+                            <span class="legend-label-compact">Doing Great</span>
+                        </div>
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol covered">📖</span>
+                            <span class="legend-label-compact">Practiced</span>
+                        </div>
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol attention">⚠️</span>
+                            <span class="legend-label-compact">Needs Practice</span>
+                        </div>
+                        <div class="legend-item-compact">
+                            <span class="legend-symbol not-started">⭕</span>
+                            <span class="legend-label-compact">Not Started</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="student-info">
+                <div class="student-avatar">
+                    <div class="avatar-emoji">👩🏻‍🎓</div>
+                </div>
+                <div class="student-details">
+                    <h1>Nia's Progress</h1>
+                    <p class="grade">Grade 7 • Math Report</p>
+                    <p class="subtitle">See what Nia has been working on</p>
+                </div>
+            </div>
+            
+            <div class="overall-progress">
+                <div class="progress-circle" data-progress="73">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="progress-ring-circle" cx="60" cy="60" r="50"></circle>
+                        <circle class="progress-ring-circle progress-fill" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="progress-text">
+                        <span class="percentage">73%</span>
+                        <span class="label">Overall</span>
+                    </div>
+                </div>
+                
+                <!-- Topic List with Colors -->
+                <div class="topic-list-header">
+                    <div class="topic-item" data-status="covered">
+                        <span class="topic-indicator covered"></span>
+                        <span class="topic-name">Ratios and Proportional Relationships</span>
+                    </div>
+                    <div class="topic-item" data-status="attention">
+                        <span class="topic-indicator attention"></span>
+                        <span class="topic-name">The Number System</span>
+                    </div>
+                    <div class="topic-item" data-status="covered">
+                        <span class="topic-indicator covered"></span>
+                        <span class="topic-name">Expressions and Equations</span>
+                    </div>
+                    <div class="topic-item" data-status="mastered">
+                        <span class="topic-indicator mastered"></span>
+                        <span class="topic-name">Geometry</span>
+                    </div>
+                    <div class="topic-item" data-status="not-started">
+                        <span class="topic-indicator not-started"></span>
+                        <span class="topic-name">Statistics and Probability</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content" style="display: flex; gap: 20px; align-items: flex-start;">
+            <!-- Left Column - Main Content -->
+            <div class="content-column" style="flex: 1;">
+                <!-- Top Cards Row -->
+                <div class="top-cards-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <!-- Teacher's Remarks Card -->
+                    <div class="section-card" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
+                        <div class="section-header">
+                            <h3>Teacher's Remarks</h3>
+                        </div>
+                        <div class="teacher-remarks-content" style="line-height: 1.6; color: #374151; font-size: 0.95rem;">
+                            <p style="margin: 0 0 15px 0;">Nia has shown remarkable growth in her mathematical understanding this semester. Her enthusiasm for learning and willingness to tackle challenging problems has been truly impressive. She demonstrates excellent visual-spatial skills, particularly in geometry, where she can quickly identify patterns and relationships.</p>
+                            
+                            <p style="margin: 0 0 15px 0;">Her problem-solving approach has become more systematic and thoughtful. Nia excels in proportional relationships and has made significant improvements in ratio problems. She shows strong logical reasoning skills and can communicate her mathematical thinking clearly when working through complex problems.</p>
+                            
+                            <p style="margin: 0;">While she continues to develop her skills with negative numbers and word problems, her positive attitude and persistence make her a joy to teach. I recommend 15-20 minutes of daily practice on Khan Academy, focusing on the Number System topics to reinforce these concepts.</p>
+                        </div>
+                    </div>
+
+                    <!-- Cognitive Development Card -->
+                    <div class="section-card" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
+                        <div class="section-header">
+                            <span class="section-number">2</span>
+                            <h3>Cognitive Development</h3>
+                        </div>
+                        <div class="cognitive-section">
+                            <div class="cognitive-item">
+                                <div class="cognitive-label">
+                                    <span class="cognitive-icon">🧠</span>
+                                    <span>Memory and Recall</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%; background-color: #10b981;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="cognitive-item">
+                                <div class="cognitive-label">
+                                    <span class="cognitive-icon">📋</span>
+                                    <span>Organization of Work</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%; background-color: #f59e0b;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="cognitive-item">
+                                <div class="cognitive-label">
+                                    <span class="cognitive-icon">🎯</span>
+                                    <span>Ability to focus</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 90%; background-color: #10b981;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="cognitive-item">
+                                <div class="cognitive-label">
+                                    <span class="cognitive-icon">🔍</span>
+                                    <span>Ability to self serve answers</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%; background-color: #f59e0b;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="cognitive-item">
+                                <div class="cognitive-label">
+                                    <span class="cognitive-icon">⚠️</span>
+                                    <span>Avoiding careless mistakes</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 35%; background-color: #ef4444;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="cognitive-item">
+                                <div class="cognitive-label">
+                                    <span class="cognitive-icon">💪</span>
+                                    <span>Grit/Resilience</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%; background-color: #10b981;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Learning Outcomes List -->
+            <div class="learning-outcomes" id="learningOutcomes">
+                <!-- Ratios and Proportional Relationships -->
+                <div class="topic-card" data-status="covered" data-topic="ratios">
+                    <div class="topic-header">
+                        <span class="topic-indicator covered"></span>
+                        <h3>Ratios and Proportional Relationships</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn expanded" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">6</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="mastered" data-count="3" style="width: 50%" title="3 Skills Doing Great">
+                                <span class="bar-label">✅3</span>
+                            </div>
+                            <div class="chart-bar" data-status="covered" data-count="2" style="width: 33%" title="2 Skills Practiced">
+                                <span class="bar-label">📖2</span>
+                            </div>
+                            <div class="chart-bar" data-status="attention" data-count="1" style="width: 17%" title="1 Skill Needs Practice">
+                                <span class="bar-label">⚠️1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list expanded">
+                        <div class="skill-item mastered" data-skill-id="7.RP.A.1" onclick="showQuestions(this)">
+                            <input type="checkbox" class="skill-checkbox" value="7.RP.A.1" onclick="event.stopPropagation()" style="margin-right: 8px;">
+                            <span class="skill-code">7.RP.A.1</span>
+                            <span class="skill-description">Compute unit rates with fractions</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.RP.A.2a" onclick="showQuestions(this)">
+                            <input type="checkbox" class="skill-checkbox" value="7.RP.A.2a" onclick="event.stopPropagation()" style="margin-right: 8px;">
+                            <span class="skill-code">7.RP.A.2a</span>
+                            <span class="skill-description">Recognize proportional relationships</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.RP.A.2b" onclick="showQuestions(this)">
+                            <input type="checkbox" class="skill-checkbox" value="7.RP.A.2b" onclick="event.stopPropagation()" style="margin-right: 8px;">
+                            <span class="skill-code">7.RP.A.2b</span>
+                            <span class="skill-description">Identify constant of proportionality</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.RP.A.2c" onclick="showQuestions(this)">
+                            <input type="checkbox" class="skill-checkbox" value="7.RP.A.2c" onclick="event.stopPropagation()" style="margin-right: 8px;">
+                            <span class="skill-code">7.RP.A.2c</span>
+                            <span class="skill-description">Represent relationships by equations</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.RP.A.2d" onclick="showQuestions(this)">
+                            <input type="checkbox" class="skill-checkbox" value="7.RP.A.2d" onclick="event.stopPropagation()" style="margin-right: 8px;">
+                            <span class="skill-code">7.RP.A.2d</span>
+                            <span class="skill-description">Explain points on proportional graphs</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.RP.A.3" onclick="showQuestions(this)">
+                            <input type="checkbox" class="skill-checkbox" value="7.RP.A.3" onclick="event.stopPropagation()" style="margin-right: 8px;">
+                            <span class="skill-code">7.RP.A.3</span>
+                            <span class="skill-description">Solve ratio and percent problems</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Number System -->
+                <div class="topic-card" data-status="attention" data-topic="numbers">
+                    <div class="topic-header">
+                        <span class="topic-indicator attention"></span>
+                        <h3>The Number System</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">8</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="mastered" data-count="2" style="width: 25%" title="2 Skills Doing Great">
+                                <span class="bar-label">✅2</span>
+                            </div>
+                            <div class="chart-bar" data-status="covered" data-count="3" style="width: 37%" title="3 Skills Practiced">
+                                <span class="bar-label">📖3</span>
+                            </div>
+                            <div class="chart-bar" data-status="attention" data-count="2" style="width: 25%" title="2 Skills Need Practice">
+                                <span class="bar-label">⚠️2</span>
+                            </div>
+                            <div class="chart-bar" data-status="not-started" data-count="1" style="width: 13%" title="1 Skill Not Started">
+                                <span class="bar-label">⭕1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list collapsed">
+                        <div class="skill-item mastered" data-skill-id="7.NS.A.1a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1a</span>
+                            <span class="skill-description">Opposite quantities combine to make 0</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.NS.A.1b" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1b</span>
+                            <span class="skill-description">Understanding p + q on number line</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.NS.A.1c" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1c</span>
+                            <span class="skill-description">Subtraction as adding additive inverse</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.NS.A.1d" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.1d</span>
+                            <span class="skill-description">Properties for adding rational numbers</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.NS.A.2a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.2a</span>
+                            <span class="skill-description">Multiplication with rational numbers</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.NS.A.2b" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.2b</span>
+                            <span class="skill-description">Division of integers</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.NS.A.2c" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.2c</span>
+                            <span class="skill-description">Properties for multiplying rational numbers</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.NS.A.3" onclick="showQuestions(this)">
+                            <span class="skill-code">7.NS.A.3</span>
+                            <span class="skill-description">Four operations with rational numbers</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geometry -->
+                <div class="topic-card" data-status="mastered" data-topic="geometry">
+                    <div class="topic-header">
+                        <span class="topic-indicator mastered"></span>
+                        <h3>Geometry</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">6</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="mastered" data-count="5" style="width: 83%" title="5 Skills Doing Great">
+                                <span class="bar-label">✅5</span>
+                            </div>
+                            <div class="chart-bar" data-status="covered" data-count="1" style="width: 17%" title="1 Skill Practiced">
+                                <span class="bar-label">📖1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list collapsed">
+                        <div class="skill-item mastered" data-skill-id="7.G.A.1" onclick="showQuestions(this)">
+                            <span class="skill-code">7.G.A.1</span>
+                            <span class="skill-description">Scale drawings and scale factor</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.G.A.2" onclick="showQuestions(this)">
+                            <span class="skill-code">7.G.A.2</span>
+                            <span class="skill-description">Draw geometric shapes with given conditions</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.G.A.3" onclick="showQuestions(this)">
+                            <span class="skill-code">7.G.A.3</span>
+                            <span class="skill-description">Cross-sections of 3D figures</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.G.B.4" onclick="showQuestions(this)">
+                            <span class="skill-code">7.G.B.4</span>
+                            <span class="skill-description">Area and circumference of circles</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.G.B.5" onclick="showQuestions(this)">
+                            <span class="skill-code">7.G.B.5</span>
+                            <span class="skill-description">Angle relationships</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.G.B.6" onclick="showQuestions(this)">
+                            <span class="skill-code">7.G.B.6</span>
+                            <span class="skill-description">Surface area and volume</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expressions and Equations -->
+                <div class="topic-card" data-status="covered" data-topic="expressions">
+                    <div class="topic-header">
+                        <span class="topic-indicator covered"></span>
+                        <h3>Expressions and Equations</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">6</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="mastered" data-count="2" style="width: 33%" title="2 Skills Doing Great">
+                                <span class="bar-label">✅2</span>
+                            </div>
+                            <div class="chart-bar" data-status="covered" data-count="2" style="width: 33%" title="2 Skills Practiced">
+                                <span class="bar-label">📖2</span>
+                            </div>
+                            <div class="chart-bar" data-status="attention" data-count="1" style="width: 17%" title="1 Skill Needs Practice">
+                                <span class="bar-label">⚠️1</span>
+                            </div>
+                            <div class="chart-bar" data-status="not-started" data-count="1" style="width: 17%" title="1 Skill Not Started">
+                                <span class="bar-label">⭕1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list collapsed">
+                        <div class="skill-item mastered" data-skill-id="7.EE.A.1" onclick="showQuestions(this)">
+                            <span class="skill-code">7.EE.A.1</span>
+                            <span class="skill-description">Apply properties of operations</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item mastered" data-skill-id="7.EE.A.2" onclick="showQuestions(this)">
+                            <span class="skill-code">7.EE.A.2</span>
+                            <span class="skill-description">Rewrite expressions in different forms</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.EE.B.3" onclick="showQuestions(this)">
+                            <span class="skill-code">7.EE.B.3</span>
+                            <span class="skill-description">Solve multi-step problems</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.EE.B.4a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.EE.B.4a</span>
+                            <span class="skill-description">Solve equations with rational numbers</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.EE.B.4b" onclick="showQuestions(this)">
+                            <span class="skill-code">7.EE.B.4b</span>
+                            <span class="skill-description">Solve inequalities</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.EE.B.4c" onclick="showQuestions(this)">
+                            <span class="skill-code">7.EE.B.4c</span>
+                            <span class="skill-description">Graph solutions to inequalities</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics and Probability -->
+                <div class="topic-card" data-status="not-started" data-topic="statistics">
+                    <div class="topic-header">
+                        <span class="topic-indicator not-started"></span>
+                        <h3>Statistics and Probability</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn" data-action="expand">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Total Skills</span>
+                            <span class="stat-value">8</span>
+                        </div>
+                        <div class="skills-breakdown-chart">
+                            <div class="chart-bar" data-status="covered" data-count="2" style="width: 25%" title="2 Skills Practiced">
+                                <span class="bar-label">📖2</span>
+                            </div>
+                            <div class="chart-bar" data-status="attention" data-count="2" style="width: 25%" title="2 Skills Need Practice">
+                                <span class="bar-label">⚠️2</span>
+                            </div>
+                            <div class="chart-bar" data-status="not-started" data-count="4" style="width: 50%" title="4 Skills Not Started">
+                                <span class="bar-label">⭕4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-list collapsed">
+                        <div class="skill-item covered" data-skill-id="7.SP.A.1" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.A.1</span>
+                            <span class="skill-description">Understand statistics as a process</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="7.SP.A.2" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.A.2</span>
+                            <span class="skill-description">Use data to draw inferences</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.SP.B.3" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.B.3</span>
+                            <span class="skill-description">Assess overlap of two data distributions</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item attention" data-skill-id="7.SP.B.4" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.B.4</span>
+                            <span class="skill-description">Use measures of center and variability</span>
+                            <div class="skill-status">⚠️</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.SP.C.5" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.C.5</span>
+                            <span class="skill-description">Understand probability of chance events</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.SP.C.6" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.C.6</span>
+                            <span class="skill-description">Approximate probability of chance events</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.SP.C.7a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.C.7a</span>
+                            <span class="skill-description">Develop probability models</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                        <div class="skill-item not-started" data-skill-id="7.SP.C.8a" onclick="showQuestions(this)">
+                            <span class="skill-code">7.SP.C.8a</span>
+                            <span class="skill-description">Find probabilities of compound events</span>
+                            <div class="skill-status">⭕</div>
+                        </div>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Questions Panel -->
+            <div class="questions-panel" id="questionsPanel" style="width: 400px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); height: fit-content; position: sticky; top: 20px;">
+                <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;">
+                    <h3 style="margin: 0; color: #1e293b; font-size: 1.3rem; display: flex; align-items: center; gap: 8px;">
+                        <span>📝</span> Questions Nia Worked On
+                    </h3>
+                    <button class="close-panel" onclick="closeQuestionsPanel()" style="background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 4px;">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <div class="no-selection" style="text-align: center; padding: 40px; background: rgba(248, 250, 252, 0.8); border-radius: 8px;">
+                        <div class="no-selection-icon" style="font-size: 3rem; margin-bottom: 15px;">📝</div>
+                        <p style="margin: 0; color: #64748b;">Click on any skill to see the questions Nia has worked on</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Worksheets and Parent Tools Section -->
+        <div class="parent-tools-section" style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
+            
+            <!-- Worksheets Section -->
+            <div class="worksheets-section" style="margin-bottom: 30px;">
+                <h3 style="margin: 0 0 20px 0; color: #1e293b; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                    <span>📄</span> Available Worksheets
+                </h3>
+                <div class="worksheet-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <button class="worksheet-btn" onclick="openWorksheet('unit-test')" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;">
+                        <span>📝</span> Unit Test Worksheets
+                    </button>
+                    <button class="worksheet-btn" onclick="openWorksheet('practice')" style="padding: 12px 16px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;">
+                        <span>✏️</span> Practice Worksheets
+                    </button>
+                    <button class="worksheet-btn" onclick="openWorksheet('homework')" style="padding: 12px 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;">
+                        <span>🏠</span> Homework Worksheets
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Worksheet Generator -->
+            <div class="custom-worksheet-section">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                    <span>🎯</span> Create Custom Worksheet
+                </h3>
+                <p style="margin: 0 0 20px 0; color: #64748b; font-size: 0.9rem;">Select skills from the topics above using the checkboxes, then generate a personalized worksheet for Nia.</p>
+                
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick="generateCustomWorksheet()" style="padding: 10px 20px; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+                        <span>🎯</span> Generate Custom Worksheet
+                    </button>
+                    <button onclick="selectAllSkills()" style="padding: 8px 16px; background: transparent; color: #6366f1; border: 1px solid #6366f1; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        Select All
+                    </button>
+                    <button onclick="clearAllSkills()" style="padding: 8px 16px; background: transparent; color: #64748b; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        Clear All
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        console.log('Parent view loading...');
+        
+        // Sample questions data
+        const questionsData = {
+            '7.RP.A.1': [
+                {
+                    question: "A recipe calls for 2 cups of flour for every 3 cups of sugar. How much flour is needed for 9 cups of sugar?",
+                    studentAnswer: "6 cups",
+                    correctAnswer: "6 cups",
+                    isCorrect: true,
+                    date: "2024-05-10"
+                },
+                {
+                    question: "If 5 pencils cost $3.75, what is the unit rate per pencil?",
+                    studentAnswer: "$0.75",
+                    correctAnswer: "$0.75",
+                    isCorrect: true,
+                    date: "2024-05-08"
+                }
+            ],
+            '7.RP.A.2a': [
+                {
+                    question: "Which table represents a proportional relationship?",
+                    studentAnswer: "Table B",
+                    correctAnswer: "Table B",
+                    isCorrect: true,
+                    date: "2024-05-09"
+                }
+            ],
+            '7.RP.A.2d': [
+                {
+                    question: "A car travels 240 miles in 4 hours. At this rate, how far will it travel in 7 hours?",
+                    studentAnswer: "400 miles",
+                    correctAnswer: "420 miles",
+                    isCorrect: false,
+                    date: "2024-05-07"
+                },
+                {
+                    question: "If 3 pounds of apples cost $4.50, how much do 8 pounds cost?",
+                    studentAnswer: "$12.00",
+                    correctAnswer: "$12.00",
+                    isCorrect: true,
+                    date: "2024-05-06"
+                }
+            ],
+            '7.NS.A.1c': [
+                {
+                    question: "Calculate: -8 + 5",
+                    studentAnswer: "3",
+                    correctAnswer: "-3",
+                    isCorrect: false,
+                    date: "2024-05-05"
+                },
+                {
+                    question: "What is -15 - (-7)?",
+                    studentAnswer: "-8",
+                    correctAnswer: "-8",
+                    isCorrect: true,
+                    date: "2024-05-04"
+                }
+            ],
+            '7.G.B.4': [
+                {
+                    question: "Find the area of a circle with radius 6 cm. Use π = 3.14",
+                    studentAnswer: "113.04 cm²",
+                    correctAnswer: "113.04 cm²",
+                    isCorrect: true,
+                    date: "2024-05-03"
+                }
+            ],
+            '7.EE.A.1': [
+                {
+                    question: "Simplify: 3x + 5x - 2x",
+                    studentAnswer: "6x",
+                    correctAnswer: "6x",
+                    isCorrect: true,
+                    date: "2024-05-02"
+                },
+                {
+                    question: "Combine like terms: 4y + 7 - 2y + 3",
+                    studentAnswer: "2y + 10",
+                    correctAnswer: "2y + 10",
+                    isCorrect: true,
+                    date: "2024-05-01"
+                }
+            ],
+            '7.EE.B.4b': [
+                {
+                    question: "Solve for x: 2x + 7 = 15",
+                    studentAnswer: "x = 5",
+                    correctAnswer: "x = 4",
+                    isCorrect: false,
+                    date: "2024-04-30"
+                },
+                {
+                    question: "Solve: 3(x - 2) = 12",
+                    studentAnswer: "x = 6",
+                    correctAnswer: "x = 6",
+                    isCorrect: true,
+                    date: "2024-04-29"
+                }
+            ],
+            '7.SP.A.1': [
+                {
+                    question: "A survey asked 100 students about their favorite subject. 35 chose Math, 25 chose Science, 20 chose English, and 20 chose History. What percentage chose Math?",
+                    studentAnswer: "35%",
+                    correctAnswer: "35%",
+                    isCorrect: true,
+                    date: "2024-04-28"
+                }
+            ],
+            '7.SP.B.3': [
+                {
+                    question: "Compare the means of two data sets: Set A: {4, 6, 8, 10, 12} and Set B: {2, 4, 6, 8, 10}",
+                    studentAnswer: "Set A mean is 8, Set B mean is 5",
+                    correctAnswer: "Set A mean is 8, Set B mean is 6",
+                    isCorrect: false,
+                    date: "2024-04-27"
+                }
+            ]
+        };
+        
+        // Side panel questions view - teacher dashboard style
+        function showQuestions(skillElement) {
+            console.log('Skill clicked:', skillElement.dataset.skillId);
+            
+            const skillId = skillElement.dataset.skillId;
+            const skillCode = skillElement.querySelector('.skill-code').textContent;
+            const skillDescription = skillElement.querySelector('.skill-description').textContent;
+            
+            console.log('Questions for skill:', skillId, questionsData[skillId]);
+            
+            // Remove previous selection
+            document.querySelectorAll('.skill-item.selected').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Add selection to current skill
+            skillElement.classList.add('selected');
+            
+            // Get questions for this skill
+            const questions = questionsData[skillId] || [];
+            console.log('Questions found:', questions.length);
+            
+            // Show questions panel
+            const panel = document.getElementById('questionsPanel');
+            panel.style.display = 'block'; // Make sure panel is visible
+            const panelContent = panel.querySelector('.panel-content');
+            
+            if (questions.length === 0) {
+                panelContent.innerHTML = `
+                    <div class="skill-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;">
+                        <h4 style="margin: 0; color: #1e293b; font-size: 1.1rem;">${skillCode}</h4>
+                        <p style="margin: 5px 0 0 0; color: #64748b; font-size: 0.9rem;">${skillDescription}</p>
+                    </div>
+                    <div class="no-selection" style="text-align: center; padding: 30px; background: rgba(248, 250, 252, 0.8); border-radius: 8px;">
+                        <div class="no-selection-icon" style="font-size: 3rem; margin-bottom: 15px;">📚</div>
+                        <p style="margin: 0; color: #64748b;">No questions attempted yet for this skill.</p>
+                    </div>
+                `;
+            } else {
+                const questionsHtml = questions.map((q, index) => `
+                    <div class="question-item ${q.isCorrect ? 'correct' : 'incorrect'}" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div class="question-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span class="question-number" style="font-weight: 600; color: #374151;">Question ${index + 1}</span>
+                            <span class="question-status" style="font-size: 1.3rem;">${q.isCorrect ? '✅' : '❌'}</span>
+                        </div>
+                        <div class="question-text" style="color: #1e293b; margin-bottom: 15px; line-height: 1.6; font-size: 0.95rem;">${q.question}</div>
+                        <div class="answer-section" style="display: grid; gap: 10px;">
+                            <div class="student-answer" style="padding: 10px; background: ${q.isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-radius: 6px; border-left: 3px solid ${q.isCorrect ? '#22c55e' : '#ef4444'};">
+                                <strong style="color: #374151;">Nia's Answer:</strong>
+                                <span style="color: ${q.isCorrect ? '#16a34a' : '#dc2626'};">${q.studentAnswer}</span>
+                            </div>
+                            <div class="correct-answer" style="padding: 10px; background: rgba(34, 197, 94, 0.1); border-radius: 6px; border-left: 3px solid #22c55e;">
+                                <strong style="color: #374151;">Correct Answer:</strong>
+                                <span style="color: #16a34a;">${q.correctAnswer}</span>
+                            </div>
+                        </div>
+                        <div class="question-date" style="margin-top: 12px; font-size: 0.8rem; color: #64748b;">Attempted: ${q.date}</div>
+                    </div>
+                `).join('');
+                
+                panelContent.innerHTML = `
+                    <div class="skill-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;">
+                        <h4 style="margin: 0; color: #1e293b; font-size: 1.1rem;">${skillCode} - Questions</h4>
+                        <p style="margin: 5px 0 0 0; color: #64748b; font-size: 0.9rem;">${skillDescription}</p>
+                    </div>
+                    <div class="questions-list">
+                        ${questionsHtml}
+                    </div>
+                `;
+            }
+            
+            // Show the panel
+            panel.classList.remove('hidden');
+        }
+        
+        // Close questions panel - hide the entire panel
+        function closeQuestionsPanel() {
+            console.log('Closing questions panel');
+            const panel = document.getElementById('questionsPanel');
+            if (panel) {
+                panel.style.display = 'none';
+            }
+            
+            // Remove selection from all skills
+            document.querySelectorAll('.skill-item.selected').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
+        
+        // Initialize progress circle
+        function initializeProgressCircle() {
+            const progressCircle = document.querySelector('.progress-circle');
+            if (!progressCircle) return;
+            
+            const progress = parseInt(progressCircle.dataset.progress) || 0;
+            const circle = progressCircle.querySelector('.progress-fill');
+            
+            if (circle) {
+                const radius = 50;
+                const circumference = 2 * Math.PI * radius;
+                const offset = circumference - (progress / 100) * circumference;
+                
+                circle.style.strokeDasharray = circumference;
+                circle.style.strokeDashoffset = offset;
+            }
+        }
+        
+    // Chart bar click functionality
+    function handleChartBarClick(bar) {
+        console.log('Chart bar clicked:', bar.dataset.status);
+        
+        const card = bar.closest('.topic-card');
+        const status = bar.dataset.status;
+        const skillItems = card.querySelectorAll('.skill-item');
+        
+        // Expand the skills list if collapsed
+        const skillsList = card.querySelector('.skills-list');
+        const expandBtn = card.querySelector('.expand-btn');
+        if (!skillsList.classList.contains('expanded')) {
+            skillsList.classList.remove('collapsed');
+            skillsList.classList.add('expanded');
+            expandBtn.classList.add('expanded');
+        }
+        
+        // Filter skills to show only matching status
+        skillItems.forEach(item => {
+            const itemStatus = item.classList.contains('mastered') ? 'mastered' :
+                              item.classList.contains('covered') ? 'covered' :
+                              item.classList.contains('attention') ? 'attention' : 'not-started';
+            
+            if (itemStatus === status) {
+                item.style.display = 'flex';
+                item.style.backgroundColor = 'rgba(99, 102, 241, 0.1)'; // Highlight filtered items
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        // Add "Show All" text link next to expand button
+        addShowAllLink(card, status);
+    }
+    
+    // Add show all link functionality
+    function addShowAllLink(card, filteredStatus) {
+        console.log('Adding show all link for status:', filteredStatus);
+        
+        // Remove existing show all link
+        const existingLink = card.querySelector('.show-all-link');
+        if (existingLink) {
+            existingLink.remove();
+        }
+        
+        // Create new show all link
+        const showAllLink = document.createElement('span');
+        showAllLink.className = 'show-all-link';
+        showAllLink.style.cssText = `
+            color: #6366f1;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: underline;
+            margin-right: 12px;
+            transition: color 0.2s ease;
+        `;
+        showAllLink.textContent = 'Show All';
+        
+        showAllLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const skillItems = card.querySelectorAll('.skill-item');
+            skillItems.forEach(item => {
+                item.style.display = 'flex';
+                item.style.backgroundColor = ''; // Remove highlight
+            });
+            showAllLink.remove();
+        });
+        
+        showAllLink.addEventListener('mouseenter', function() {
+            showAllLink.style.color = '#4f46e5';
+        });
+        
+        showAllLink.addEventListener('mouseleave', function() {
+            showAllLink.style.color = '#6366f1';
+        });
+        
+        // Insert before the expand button in the topic actions
+        const topicActions = card.querySelector('.topic-actions');
+        if (topicActions) {
+            topicActions.insertBefore(showAllLink, topicActions.firstChild);
+        }
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded, setting up functionality...');
+        
+        // Initialize progress circle
+        initializeProgressCircle();
+        
+        // Expand/collapse buttons
+        const expandBtns = document.querySelectorAll('.expand-btn');
+        expandBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const card = btn.closest('.topic-card');
+                const skillsList = card.querySelector('.skills-list');
+                
+                if (skillsList.classList.contains('expanded')) {
+                    skillsList.classList.remove('expanded');
+                    skillsList.classList.add('collapsed');
+                    btn.classList.remove('expanded');
+                } else {
+                    skillsList.classList.remove('collapsed');
+                    skillsList.classList.add('expanded');
+                    btn.classList.add('expanded');
+                }
+            });
+        });
+        
+        // Chart bar click listeners
+        const chartBars = document.querySelectorAll('.chart-bar');
+        console.log('Found chart bars:', chartBars.length);
+        chartBars.forEach((bar, index) => {
+            console.log(`Setting up chart bar ${index + 1} for status:`, bar.dataset.status);
+            bar.style.cursor = 'pointer';
+            bar.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleChartBarClick(bar);
+            });
+            
+            // Add hover effect
+            bar.addEventListener('mouseenter', function() {
+                bar.style.opacity = '0.8';
+                bar.style.transform = 'scale(1.02)';
+            });
+            
+            bar.addEventListener('mouseleave', function() {
+                bar.style.opacity = '1';
+                bar.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Filter dropdown
+        const statusFilter = document.getElementById('statusFilter');
+        if (statusFilter) {
+            statusFilter.addEventListener('change', function(e) {
+                const filterValue = e.target.value;
+                const skillItems = document.querySelectorAll('.skill-item');
+                
+                // Remove any existing show all links when using dropdown filter
+                document.querySelectorAll('.show-all-link').forEach(link => link.remove());
+                
+                skillItems.forEach(item => {
+                    const status = item.classList.contains('mastered') ? 'mastered' :
+                                  item.classList.contains('covered') ? 'covered' :
+                                  item.classList.contains('attention') ? 'attention' : 'not-started';
+                    
+                    if (filterValue === 'all' || status === filterValue) {
+                        item.style.display = 'flex';
+                        item.style.backgroundColor = ''; // Remove any highlight
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        console.log('Parent view ready with chart bar functionality!');
+    });
+    
+    // Worksheet functions
+    function openWorksheet(type) {
+        console.log('Opening worksheet:', type);
+        // In a real implementation, this would open/download the worksheet
+        const worksheetTypes = {
+            'unit-test': 'Unit Test Worksheets',
+            'practice': 'Practice Worksheets',
+            'homework': 'Homework Worksheets',
+            'review': 'Review Worksheets'
+        };
+        
+        alert(`Opening ${worksheetTypes[type]}...\n\nThis would normally download or open the worksheet in a new tab.`);
+    }
+    
+    // Custom worksheet functions
+    function generateCustomWorksheet() {
+        const selectedSkills = [];
+        const checkboxes = document.querySelectorAll('.skill-checkbox:checked');
+        
+        checkboxes.forEach(checkbox => {
+            selectedSkills.push(checkbox.value);
+        });
+        
+        if (selectedSkills.length === 0) {
+            alert('Please select at least one skill to generate a worksheet.');
+            return;
+        }
+        
+        console.log('Generating custom worksheet for skills:', selectedSkills);
+        alert(`Generating custom worksheet for ${selectedSkills.length} selected skills:\n\n${selectedSkills.join('\n')}\n\nThis would normally generate and download a personalized worksheet.`);
+    }
+    
+    function selectAllSkills() {
+        const checkboxes = document.querySelectorAll('.skill-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+    }
+    
+    function clearAllSkills() {
+        const checkboxes = document.querySelectorAll('.skill-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    }
+    
+    
+    // Add hover effects for worksheet buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        const worksheetBtns = document.querySelectorAll('.worksheet-btn');
+        worksheetBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    });
+    
+    </script>
+</body>
+</html>

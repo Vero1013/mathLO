@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Parent Test</title>
+    <link rel="stylesheet" href="parent-styles.css?v=13">
+    <style>
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            border: 2px solid #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        .debug-info h4 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <h4>Debug Info</h4>
+        <div id="debugOutput">Loading...</div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="student-info">
+                <h1>Simple Parent Test</h1>
+                <p>Testing click functionality</p>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="learning-outcomes">
+                <!-- Simple test topic card -->
+                <div class="topic-card" data-status="covered" data-topic="test">
+                    <div class="topic-header">
+                        <span class="topic-indicator covered"></span>
+                        <h3>Test Topic</h3>
+                        <div class="topic-actions">
+                            <button class="expand-btn" data-action="expand" onclick="testExpandClick(this)">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="skills-list collapsed">
+                        <div class="skill-item mastered" data-skill-id="TEST.1" onclick="testSkillClick(this)">
+                            <span class="skill-code">TEST.1</span>
+                            <span class="skill-description">Test skill with onclick</span>
+                            <div class="skill-status">✅</div>
+                        </div>
+                        <div class="skill-item covered" data-skill-id="TEST.2">
+                            <span class="skill-code">TEST.2</span>
+                            <span class="skill-description">Test skill without onclick</span>
+                            <div class="skill-status">📖</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const debugOutput = document.getElementById('debugOutput');
+        
+        function updateDebug(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugOutput.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            console.log(message);
+        }
+        
+        function testExpandClick(btn) {
+            updateDebug('Expand button clicked!');
+            const card = btn.closest('.topic-card');
+            const skillsList = card.querySelector('.skills-list');
+            
+            if (skillsList.classList.contains('expanded')) {
+                skillsList.classList.remove('expanded');
+                skillsList.classList.add('collapsed');
+                btn.classList.remove('expanded');
+                updateDebug('Skills list collapsed');
+            } else {
+                skillsList.classList.remove('collapsed');
+                skillsList.classList.add('expanded');
+                btn.classList.add('expanded');
+                updateDebug('Skills list expanded');
+            }
+        }
+        
+        function testSkillClick(element) {
+            updateDebug(`Skill clicked: ${element.dataset.skillId}`);
+            element.style.background = element.style.background === 'lightgreen' ? '' : 'lightgreen';
+        }
+        
+        // Test the ParentDashboard class
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDebug('DOM loaded, testing...');
+            
+            // Test basic functionality first
+            updateDebug('Setting up manual event listeners...');
+            
+            // Add event listener to skill item without onclick
+            const skillWithoutOnclick = document.querySelector('[data-skill-id="TEST.2"]');
+            if (skillWithoutOnclick) {
+                skillWithoutOnclick.addEventListener('click', function() {
+                    updateDebug(`Manual listener: ${this.dataset.skillId}`);
+                    this.style.background = this.style.background === 'lightblue' ? '' : 'lightblue';
+                });
+                updateDebug('Manual listener added to TEST.2');
+            }
+            
+            // Try to load the original parent script
+            updateDebug('Loading parent-script.js...');
+            const script = document.createElement('script');
+            script.src = 'parent-script.js?v=20';
+            script.onload = () => {
+                updateDebug('Parent script loaded');
+                setTimeout(() => {
+                    if (window.parentApp) {
+                        updateDebug('✅ ParentApp initialized');
+                    } else {
+                        updateDebug('❌ ParentApp not found');
+                    }
+                }, 500);
+            };
+            script.onerror = (error) => {
+                updateDebug('❌ Failed to load parent script');
+            };
+            document.head.appendChild(script);
+        });
+    </script>
+</body>
+</html>

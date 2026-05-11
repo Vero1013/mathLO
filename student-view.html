@@ -3,35 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Learning Outcomes - Grade 7 Math Progress</title>
-    <link rel="stylesheet" href="styles.css?v=3">
+    <title>My Math Progress - Grade 7 Student View</title>
+    <link rel="stylesheet" href="styles.css?v=4">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .skill-item.selected {
-            background: rgba(99, 102, 241, 0.1) !important;
-            border-left: 4px solid #6366f1;
-            transform: translateX(2px);
-        }
-        
-        .skill-item {
-            transition: all 0.2s ease;
-        }
-        
-        .questions-panel {
-            animation: slideInRight 0.3s ease-out;
-        }
-        
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -42,21 +16,21 @@
                     <a href="parent-view-working.html" class="view-link parent-view">
                         <i class="fas fa-heart"></i> Parent View
                     </a>
-                    <a href="student-view.html" class="view-link student-view">
-                        <i class="fas fa-user-graduate"></i> Student View
+                    <a href="index.html" class="view-link teacher-view">
+                        <i class="fas fa-chalkboard-teacher"></i> Teacher View
                     </a>
-                    <span class="current-view">Teacher View</span>
+                    <span class="current-view">Student View</span>
                 </div>
                 <div class="filter-controls">
                     <select id="statusFilter" class="filter-select">
                         <option value="all">All Skills</option>
-                        <option value="mastered">Mastered Skills</option>
-                        <option value="covered">Covered Skills</option>
-                        <option value="attention">Needs Attention</option>
-                        <option value="not-started">Not Started</option>
+                        <option value="mastered">I've Got This!</option>
+                        <option value="covered">I'm Learning</option>
+                        <option value="attention">Need More Practice</option>
+                        <option value="not-started">Haven't Started</option>
                     </select>
                     <button class="action-btn secondary export-btn" id="exportBtn">
-                        <i class="fas fa-download"></i> Export
+                        <i class="fas fa-download"></i> My Progress
                     </button>
                 </div>
                 
@@ -66,19 +40,19 @@
                     <div class="legend-items-horizontal">
                         <div class="legend-item-compact">
                             <span class="legend-symbol mastered">✓</span>
-                            <span class="legend-label-compact">Mastered</span>
+                            <span class="legend-label-compact">I've Got This!</span>
                         </div>
                         <div class="legend-item-compact">
                             <span class="legend-symbol covered">📖</span>
-                            <span class="legend-label-compact">Practiced</span>
+                            <span class="legend-label-compact">I'm Learning</span>
                         </div>
                         <div class="legend-item-compact">
                             <span class="legend-symbol attention">⚠️</span>
-                            <span class="legend-label-compact">Needs Attention</span>
+                            <span class="legend-label-compact">Need More Practice</span>
                         </div>
                         <div class="legend-item-compact">
                             <span class="legend-symbol not-started">⭕</span>
-                            <span class="legend-label-compact">Not Started</span>
+                            <span class="legend-label-compact">Haven't Started</span>
                         </div>
                     </div>
                 </div>
@@ -88,9 +62,9 @@
                     <div class="avatar-emoji">👩🏻‍🎓</div>
                 </div>
                 <div class="student-details">
-                    <h1>Nia Advani</h1>
-                    <p class="grade">Grade 7 • Math Report Card</p>
-                    <p class="subtitle">Learning Outcomes Overview</p>
+                    <h1>My Math Journey</h1>
+                    <p class="grade">Grade 7 • My Progress Report</p>
+                    <p class="subtitle">Track your learning and celebrate achievements!</p>
                 </div>
             </div>
             <div class="overall-progress">
@@ -101,7 +75,7 @@
                     </svg>
                     <div class="progress-text">
                         <span class="percentage">37%</span>
-                        <span class="label">Overall</span>
+                        <span class="label">Complete</span>
                     </div>
                 </div>
                 
@@ -131,6 +105,7 @@
             </div>
         </header>
 
+
         <!-- Main Content Area with Two Columns -->
         <div style="display: flex; gap: 20px; align-items: flex-start;">
             <!-- Left Column - Learning Outcomes -->
@@ -154,24 +129,24 @@
                         <span class="stat-value">28</span>
                     </div>
                     <div class="skills-breakdown-chart">
-                        <div class="chart-bar" data-status="mastered" data-count="12" style="width: 43%" title="12 Mastered Skills">
+                        <div class="chart-bar" data-status="mastered" data-count="12" style="width: 43%" title="12 Skills I've Got This!">
                             <span class="bar-label">✓12</span>
                         </div>
-                        <div class="chart-bar" data-status="covered" data-count="8" style="width: 29%" title="8 Concept Covered Skills">
+                        <div class="chart-bar" data-status="covered" data-count="8" style="width: 29%" title="8 Skills I'm Learning">
                             <span class="bar-label">📖8</span>
                         </div>
-                        <div class="chart-bar" data-status="attention" data-count="5" style="width: 18%" title="5 Needs Attention Skills">
+                        <div class="chart-bar" data-status="attention" data-count="5" style="width: 18%" title="5 Skills Need More Practice">
                             <span class="bar-label">⚠️5</span>
                         </div>
-                        <div class="chart-bar" data-status="not-started" data-count="3" style="width: 10%" title="3 Not Started Skills">
+                        <div class="chart-bar" data-status="not-started" data-count="3" style="width: 10%" title="3 Skills Haven't Started">
                             <span class="bar-label">⭕3</span>
                         </div>
                     </div>
                 </div>
                 <div class="skills-list expanded">
-                    <div class="skill-item mastered" data-skill-id="7.RP.A.1">
+                    <div class="skill-item mastered" data-skill-id="7.RP.A.1" onclick="showQuestions(this)">
                         <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.RP.A.1" class="skill-select-checkbox" data-skill-id="7.RP.A.1">
+                            <input type="checkbox" id="skill-7.RP.A.1" class="skill-select-checkbox" data-skill-id="7.RP.A.1" onclick="event.stopPropagation()">
                             <label for="skill-7.RP.A.1" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.RP.A.1</span>
@@ -180,9 +155,9 @@
                             ✅
                         </div>
                     </div>
-                    <div class="skill-item mastered" data-skill-id="7.RP.A.2a">
+                    <div class="skill-item mastered" data-skill-id="7.RP.A.2a" onclick="showQuestions(this)">
                         <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.RP.A.2a" class="skill-select-checkbox" data-skill-id="7.RP.A.2a">
+                            <input type="checkbox" id="skill-7.RP.A.2a" class="skill-select-checkbox" data-skill-id="7.RP.A.2a" onclick="event.stopPropagation()">
                             <label for="skill-7.RP.A.2a" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.RP.A.2a</span>
@@ -191,9 +166,9 @@
                             ✅
                         </div>
                     </div>
-                    <div class="skill-item covered" data-skill-id="7.RP.A.2b">
+                    <div class="skill-item covered" data-skill-id="7.RP.A.2b" onclick="showQuestions(this)">
                         <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.RP.A.2b" class="skill-select-checkbox" data-skill-id="7.RP.A.2b">
+                            <input type="checkbox" id="skill-7.RP.A.2b" class="skill-select-checkbox" data-skill-id="7.RP.A.2b" onclick="event.stopPropagation()">
                             <label for="skill-7.RP.A.2b" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.RP.A.2b</span>
@@ -202,9 +177,9 @@
                             📖
                         </div>
                     </div>
-                    <div class="skill-item covered" data-skill-id="7.RP.A.2c">
+                    <div class="skill-item covered" data-skill-id="7.RP.A.2c" onclick="showQuestions(this)">
                         <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.RP.A.2c" class="skill-select-checkbox" data-skill-id="7.RP.A.2c">
+                            <input type="checkbox" id="skill-7.RP.A.2c" class="skill-select-checkbox" data-skill-id="7.RP.A.2c" onclick="event.stopPropagation()">
                             <label for="skill-7.RP.A.2c" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.RP.A.2c</span>
@@ -213,9 +188,9 @@
                             📖
                         </div>
                     </div>
-                    <div class="skill-item attention" data-skill-id="7.RP.A.2d">
+                    <div class="skill-item attention" data-skill-id="7.RP.A.2d" onclick="showQuestions(this)">
                         <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.RP.A.2d" class="skill-select-checkbox" data-skill-id="7.RP.A.2d">
+                            <input type="checkbox" id="skill-7.RP.A.2d" class="skill-select-checkbox" data-skill-id="7.RP.A.2d" onclick="event.stopPropagation()">
                             <label for="skill-7.RP.A.2d" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.RP.A.2d</span>
@@ -224,9 +199,9 @@
                             ⚠️
                         </div>
                     </div>
-                    <div class="skill-item attention" data-skill-id="7.RP.A.3">
+                    <div class="skill-item attention" data-skill-id="7.RP.A.3" onclick="showQuestions(this)">
                         <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.RP.A.3" class="skill-select-checkbox" data-skill-id="7.RP.A.3">
+                            <input type="checkbox" id="skill-7.RP.A.3" class="skill-select-checkbox" data-skill-id="7.RP.A.3" onclick="event.stopPropagation()">
                             <label for="skill-7.RP.A.3" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.RP.A.3</span>
@@ -255,16 +230,16 @@
                         <span class="stat-value">32</span>
                     </div>
                     <div class="skills-breakdown-chart">
-                        <div class="chart-bar" data-status="mastered" data-count="8" style="width: 25%" title="8 Mastered Skills">
+                        <div class="chart-bar" data-status="mastered" data-count="8" style="width: 25%" title="8 Skills I've Got This!">
                             <span class="bar-label">✓8</span>
                         </div>
-                        <div class="chart-bar" data-status="covered" data-count="10" style="width: 31%" title="10 Concept Covered Skills">
+                        <div class="chart-bar" data-status="covered" data-count="10" style="width: 31%" title="10 Skills I'm Learning">
                             <span class="bar-label">📖10</span>
                         </div>
-                        <div class="chart-bar" data-status="attention" data-count="9" style="width: 28%" title="9 Needs Attention Skills">
+                        <div class="chart-bar" data-status="attention" data-count="9" style="width: 28%" title="9 Skills Need More Practice">
                             <span class="bar-label">⚠️9</span>
                         </div>
-                        <div class="chart-bar" data-status="not-started" data-count="5" style="width: 16%" title="5 Not Started Skills">
+                        <div class="chart-bar" data-status="not-started" data-count="5" style="width: 16%" title="5 Skills Haven't Started">
                             <span class="bar-label">⭕5</span>
                         </div>
                     </div>
@@ -378,17 +353,17 @@
                         <span class="stat-value">35</span>
                     </div>
                     <div class="skills-breakdown-chart">
-                        <div class="chart-bar" data-status="mastered" data-count="15" style="width: 43%" title="15 Mastered Skills">
+                        <div class="chart-bar" data-status="mastered" data-count="15" style="width: 43%" title="15 Skills I've Got This!">
                             <span class="bar-label">✓15</span>
                         </div>
-                        <div class="chart-bar" data-status="covered" data-count="12" style="width: 34%" title="12 Concept Covered Skills">
+                        <div class="chart-bar" data-status="covered" data-count="12" style="width: 34%" title="12 Skills I'm Learning">
                             <span class="bar-label">📖12</span>
                         </div>
-                        <div class="chart-bar" data-status="attention" data-count="6" style="width: 17%" title="6 Needs Attention Skills">
-                            <span class="bar-label">⚠️6</span>
+                        <div class="chart-bar" data-status="attention" data-count="5" style="width: 14%" title="5 Skills Need More Practice">
+                            <span class="bar-label">⚠️5</span>
                         </div>
-                        <div class="chart-bar" data-status="not-started" data-count="2" style="width: 6%" title="2 Not Started Skills">
-                            <span class="bar-label">⭕2</span>
+                        <div class="chart-bar" data-status="not-started" data-count="3" style="width: 9%" title="3 Skills Haven't Started">
+                            <span class="bar-label">⭕3</span>
                         </div>
                     </div>
                 </div>
@@ -410,7 +385,7 @@
                             <label for="skill-7.EE.A.2" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.EE.A.2</span>
-                        <span class="skill-description">Understand that rewriting an expression in different forms in a problem context can shed light on the problem.</span>
+                        <span class="skill-description">Understand that rewriting an expression in different forms in a problem context can shed light on the problem and how the quantities in it are related.</span>
                         <div class="skill-status">
                             <i class="fas fa-check-circle"></i>
                         </div>
@@ -421,7 +396,7 @@
                             <label for="skill-7.EE.B.3" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.EE.B.3</span>
-                        <span class="skill-description">Solve multi-step real-life and mathematical problems posed with positive and negative rational numbers.</span>
+                        <span class="skill-description">Solve multi-step real-life and mathematical problems posed with positive and negative rational numbers in any form.</span>
                         <div class="skill-status">
                             <i class="fas fa-clock"></i>
                         </div>
@@ -432,7 +407,7 @@
                             <label for="skill-7.EE.B.4a" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.EE.B.4a</span>
-                        <span class="skill-description">Solve word problems leading to equations of the form px + q = r and p(x + q) = r.</span>
+                        <span class="skill-description">Solve word problems leading to equations of the form px + q = r and p(x + q) = r, where p, q, and r are specific rational numbers.</span>
                         <div class="skill-status">
                             <i class="fas fa-clock"></i>
                         </div>
@@ -443,7 +418,7 @@
                             <label for="skill-7.EE.B.4b" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.EE.B.4b</span>
-                        <span class="skill-description">Solve word problems leading to inequalities of the form px + q > r or px + q < r.</span>
+                        <span class="skill-description">Solve word problems leading to inequalities of the form px + q > r or px + q < r, where p, q, and r are specific rational numbers.</span>
                         <div class="skill-status">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
@@ -476,20 +451,20 @@
                 <div class="topic-stats">
                     <div class="stat">
                         <span class="stat-label">Total Skills</span>
-                        <span class="stat-value">24</span>
+                        <span class="stat-value">42</span>
                     </div>
                     <div class="skills-breakdown-chart">
-                        <div class="chart-bar" data-status="mastered" data-count="18" style="width: 75%" title="18 Mastered Skills">
-                            <span class="bar-label">✓18</span>
+                        <div class="chart-bar" data-status="mastered" data-count="28" style="width: 67%" title="28 Skills I've Got This!">
+                            <span class="bar-label">✓28</span>
                         </div>
-                        <div class="chart-bar" data-status="covered" data-count="4" style="width: 17%" title="4 Concept Covered Skills">
-                            <span class="bar-label">📖4</span>
+                        <div class="chart-bar" data-status="covered" data-count="10" style="width: 24%" title="10 Skills I'm Learning">
+                            <span class="bar-label">📖10</span>
                         </div>
-                        <div class="chart-bar" data-status="attention" data-count="2" style="width: 8%" title="2 Needs Attention Skills">
-                            <span class="bar-label">⚠️2</span>
+                        <div class="chart-bar" data-status="attention" data-count="3" style="width: 7%" title="3 Skills Need More Practice">
+                            <span class="bar-label">⚠️3</span>
                         </div>
-                        <div class="chart-bar" data-status="not-started" data-count="0" style="width: 0%" title="0 Not Started Skills">
-                            <span class="bar-label">⭕0</span>
+                        <div class="chart-bar" data-status="not-started" data-count="1" style="width: 2%" title="1 Skill Haven't Started">
+                            <span class="bar-label">⭕1</span>
                         </div>
                     </div>
                 </div>
@@ -500,7 +475,7 @@
                             <label for="skill-7.G.A.1" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.G.A.1</span>
-                        <span class="skill-description">Solve problems involving scale drawings of geometric figures, including computing actual lengths and areas.</span>
+                        <span class="skill-description">Solve problems involving scale drawings of geometric figures, including computing actual lengths and areas from a scale drawing and reproducing a scale drawing at a different scale.</span>
                         <div class="skill-status">
                             <i class="fas fa-check-circle"></i>
                         </div>
@@ -511,7 +486,7 @@
                             <label for="skill-7.G.A.2" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.G.A.2</span>
-                        <span class="skill-description">Draw (freehand, with ruler and protractor, and with technology) geometric shapes with given conditions.</span>
+                        <span class="skill-description">Draw (freehand, with ruler and protractor, and with technology) geometric shapes with given conditions. Focus on constructing triangles from three measures of angles or sides, noticing when the conditions determine a unique triangle, more than one triangle, or no triangle.</span>
                         <div class="skill-status">
                             <i class="fas fa-check-circle"></i>
                         </div>
@@ -522,7 +497,7 @@
                             <label for="skill-7.G.A.3" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.G.A.3</span>
-                        <span class="skill-description">Describe the two-dimensional figures that result from slicing three-dimensional figures.</span>
+                        <span class="skill-description">Describe the two-dimensional figures that result from slicing three-dimensional figures, as in plane sections of right rectangular prisms and right rectangular pyramids.</span>
                         <div class="skill-status">
                             <i class="fas fa-check-circle"></i>
                         </div>
@@ -533,31 +508,31 @@
                             <label for="skill-7.G.B.4" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.G.B.4</span>
-                        <span class="skill-description">Know the formulas for the area and circumference of a circle and use them to solve problems.</span>
+                        <span class="skill-description">Know the formulas for the area and circumference of a circle and use them to solve problems; give an informal derivation of the relationship between the circumference and area of a circle.</span>
                         <div class="skill-status">
                             <i class="fas fa-clock"></i>
                         </div>
                     </div>
-                    <div class="skill-item covered" data-skill-id="7.G.B.5">
+                    <div class="skill-item mastered" data-skill-id="7.G.B.5">
                         <div class="skill-checkbox">
                             <input type="checkbox" id="skill-7.G.B.5" class="skill-select-checkbox" data-skill-id="7.G.B.5">
                             <label for="skill-7.G.B.5" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.G.B.5</span>
-                        <span class="skill-description">Use facts about supplementary, complementary, vertical, and adjacent angles in a multi-step problem.</span>
+                        <span class="skill-description">Use facts about supplementary, complementary, vertical, and adjacent angles in a multi-step problem to write and solve simple equations for an unknown angle in a figure.</span>
                         <div class="skill-status">
-                            <i class="fas fa-clock"></i>
+                            <i class="fas fa-check-circle"></i>
                         </div>
                     </div>
-                    <div class="skill-item attention" data-skill-id="7.G.B.6">
+                    <div class="skill-item mastered" data-skill-id="7.G.B.6">
                         <div class="skill-checkbox">
                             <input type="checkbox" id="skill-7.G.B.6" class="skill-select-checkbox" data-skill-id="7.G.B.6">
                             <label for="skill-7.G.B.6" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.G.B.6</span>
-                        <span class="skill-description">Solve real-world and mathematical problems involving area, volume and surface area of two- and three-dimensional objects.</span>
+                        <span class="skill-description">Solve real-world and mathematical problems involving area, volume and surface area of two- and three-dimensional objects composed of triangles, quadrilaterals, polygons, cubes, and right prisms.</span>
                         <div class="skill-status">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-check-circle"></i>
                         </div>
                     </div>
                 </div>
@@ -577,19 +552,19 @@
                 <div class="topic-stats">
                     <div class="stat">
                         <span class="stat-label">Total Skills</span>
-                        <span class="stat-value">26</span>
+                        <span class="stat-value">38</span>
                     </div>
                     <div class="skills-breakdown-chart">
-                        <div class="chart-bar" data-status="mastered" data-count="0" style="width: 0%" title="0 Mastered Skills">
-                            <span class="bar-label">✓0</span>
+                        <div class="chart-bar" data-status="mastered" data-count="5" style="width: 13%" title="5 Skills I've Got This!">
+                            <span class="bar-label">✓5</span>
                         </div>
-                        <div class="chart-bar" data-status="covered" data-count="3" style="width: 12%" title="3 Concept Covered Skills">
-                            <span class="bar-label">📖3</span>
+                        <div class="chart-bar" data-status="covered" data-count="8" style="width: 21%" title="8 Skills I'm Learning">
+                            <span class="bar-label">📖8</span>
                         </div>
-                        <div class="chart-bar" data-status="attention" data-count="8" style="width: 31%" title="8 Needs Attention Skills">
-                            <span class="bar-label">⚠️8</span>
+                        <div class="chart-bar" data-status="attention" data-count="10" style="width: 26%" title="10 Skills Need More Practice">
+                            <span class="bar-label">⚠️10</span>
                         </div>
-                        <div class="chart-bar" data-status="not-started" data-count="15" style="width: 57%" title="15 Not Started Skills">
+                        <div class="chart-bar" data-status="not-started" data-count="15" style="width: 40%" title="15 Skills Haven't Started">
                             <span class="bar-label">⭕15</span>
                         </div>
                     </div>
@@ -601,7 +576,7 @@
                             <label for="skill-7.SP.A.1" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.SP.A.1</span>
-                        <span class="skill-description">Understand that statistics can be used to gain information about a population by examining a sample.</span>
+                        <span class="skill-description">Understand that statistics can be used to gain information about a population by examining a sample of the population; generalizations about a population from a sample are valid only if the sample is representative of that population.</span>
                         <div class="skill-status">
                             <i class="fas fa-clock"></i>
                         </div>
@@ -623,7 +598,7 @@
                             <label for="skill-7.SP.B.3" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.SP.B.3</span>
-                        <span class="skill-description">Informally assess the degree of visual overlap of two numerical data distributions.</span>
+                        <span class="skill-description">Informally assess the degree of visual overlap of two numerical data distributions with similar variabilities, measuring the difference between the centers by expressing it as a multiple of a measure of variability.</span>
                         <div class="skill-status">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
@@ -634,7 +609,7 @@
                             <label for="skill-7.SP.B.4" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.SP.B.4</span>
-                        <span class="skill-description">Use measures of center and measures of variability for numerical data from random samples.</span>
+                        <span class="skill-description">Use measures of center and measures of variability for numerical data from random samples to draw informal comparative inferences about two populations.</span>
                         <div class="skill-status">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
@@ -645,40 +620,7 @@
                             <label for="skill-7.SP.C.5" class="skill-checkbox-label"></label>
                         </div>
                         <span class="skill-code">7.SP.C.5</span>
-                        <span class="skill-description">Understand that the probability of a chance event is a number between 0 and 1.</span>
-                        <div class="skill-status">
-                            <i class="fas fa-circle"></i>
-                        </div>
-                    </div>
-                    <div class="skill-item not-started" data-skill-id="7.SP.C.6">
-                        <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.SP.C.6" class="skill-select-checkbox" data-skill-id="7.SP.C.6">
-                            <label for="skill-7.SP.C.6" class="skill-checkbox-label"></label>
-                        </div>
-                        <span class="skill-code">7.SP.C.6</span>
-                        <span class="skill-description">Approximate the probability of a chance event by collecting data on the chance process.</span>
-                        <div class="skill-status">
-                            <i class="fas fa-circle"></i>
-                        </div>
-                    </div>
-                    <div class="skill-item not-started" data-skill-id="7.SP.C.7a">
-                        <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.SP.C.7a" class="skill-select-checkbox" data-skill-id="7.SP.C.7a">
-                            <label for="skill-7.SP.C.7a" class="skill-checkbox-label"></label>
-                        </div>
-                        <span class="skill-code">7.SP.C.7a</span>
-                        <span class="skill-description">Develop a uniform probability model by assigning equal probability to all outcomes.</span>
-                        <div class="skill-status">
-                            <i class="fas fa-circle"></i>
-                        </div>
-                    </div>
-                    <div class="skill-item not-started" data-skill-id="7.SP.C.8a">
-                        <div class="skill-checkbox">
-                            <input type="checkbox" id="skill-7.SP.C.8a" class="skill-select-checkbox" data-skill-id="7.SP.C.8a">
-                            <label for="skill-7.SP.C.8a" class="skill-checkbox-label"></label>
-                        </div>
-                        <span class="skill-code">7.SP.C.8a</span>
-                        <span class="skill-description">Understand that, just as with simple events, the probability of a compound event is the fraction of outcomes.</span>
+                        <span class="skill-description">Understand that the probability of a chance event is a number between 0 and 1 that expresses the likelihood of the event occurring.</span>
                         <div class="skill-status">
                             <i class="fas fa-circle"></i>
                         </div>
@@ -692,7 +634,7 @@
             <div class="questions-panel" id="questionsPanel" style="width: 400px; min-width: 400px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); max-height: 80vh; overflow-y: auto; position: sticky; top: 20px; flex-shrink: 0;">
                 <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;">
                     <h3 style="margin: 0; color: #1e293b; font-size: 1.3rem; display: flex; align-items: center; gap: 8px;">
-                        <span>📝</span> Student Questions & Performance
+                        <span>📝</span> Questions I Worked On
                     </h3>
                     <button class="close-panel" onclick="closeQuestionsPanel()" style="background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 4px;">
                         <i class="fas fa-times"></i> Close
@@ -701,114 +643,127 @@
                 <div class="panel-content">
                     <div class="no-selection" style="text-align: center; padding: 40px; background: rgba(248, 250, 252, 0.8); border-radius: 8px;">
                         <div class="no-selection-icon" style="font-size: 3rem; margin-bottom: 15px;">📝</div>
-                        <p style="margin: 0; color: #64748b;">Click on any skill to see the questions the student has worked on and their performance</p>
+                        <p style="margin: 0; color: #64748b;">Click on any skill to see the questions you've worked on</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Create Worksheet for Selected Skills Button -->
-        <div class="global-worksheet-section">
-            <div class="button-row">
-                <button class="action-btn primary global-worksheet-btn" id="globalCreateWorksheet">
-                    <i class="fas fa-file-alt"></i> Create worksheet for selected skills
-                </button>
-                <span class="button-instruction">Hover over any skill to select it, then click this button to create a custom worksheet</span>
+        <!-- Student Tools Section -->
+        <div class="student-tools-section" style="margin-top: 20px;">
+            <div class="selection-summary" id="selectionSummary" style="display: none;">
+                <div class="summary-content">
+                    <h3>My Selected Skills</h3>
+                    <div class="selected-skills-list" id="selectedSkillsList"></div>
+                    <div class="summary-actions">
+                        <button class="action-btn primary" id="createStudyPlan">Create My Study Plan</button>
+                        <button class="action-btn secondary" id="practiceSelected">Practice These Skills</button>
+                        <button class="action-btn tertiary" id="clearSelection">Clear Selection</button>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Student Worksheets and Practice Section -->
+        <div class="student-worksheets-section" style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
             
-            <div class="button-row">
-                <button class="action-btn secondary unit-test-btn" id="unitTestWorksheet">
-                    <i class="fas fa-clipboard-check"></i> Unit test worksheet
-                </button>
-                <span class="button-instruction">Select a topic to create a comprehensive worksheet for the entire unit</span>
-            </div>
-        </div>
-
-        <!-- Global Skills Action Bar -->
-        <div class="skills-action-bar" id="skillsActionBar" style="display: none;">
-            <div class="action-bar-content">
-                <div class="selection-info">
-                    <i class="fas fa-check-circle"></i>
-                    <span id="selectedSkillsCount">0 skills selected</span>
-                </div>
-                <div class="action-bar-buttons">
-                    <button class="action-btn primary" id="createSelectedWorksheet">
-                        <i class="fas fa-file-alt"></i> Create Worksheet for Selected Skills
+            <!-- My Worksheets Section -->
+            <div class="worksheets-section" style="margin-bottom: 30px;">
+                <h3 style="margin: 0 0 20px 0; color: #1e293b; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                    <span>📄</span> My Worksheets
+                </h3>
+                <div class="worksheet-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <button class="worksheet-btn" onclick="openWorksheet('homework')" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;">
+                        <span>📝</span> My Homework
                     </button>
-                    <button class="action-btn tertiary" id="clearSkillSelection">
-                        <i class="fas fa-times"></i> Clear Selection
+                    <button class="worksheet-btn" onclick="openWorksheet('practice')" style="padding: 12px 16px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;">
+                        <span>✏️</span> Practice Worksheets
+                    </button>
+                    <button class="worksheet-btn" onclick="openWorksheet('completed')" style="padding: 12px 16px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;">
+                        <span>✅</span> Completed Work
                     </button>
                 </div>
             </div>
-        </div>
 
-        <!-- Selection Summary -->
-        <div class="selection-summary" id="selectionSummary" style="display: none;">
-            <div class="summary-content">
-                <h4>Selected Topics</h4>
-                <div class="selected-items" id="selectedItems"></div>
-                <div class="summary-actions">
-                    <button class="action-btn primary" id="confirmPractice">Create Practice Session</button>
-                    <button class="action-btn secondary" id="confirmHomework">Create Homework Assignment</button>
-                    <button class="action-btn tertiary" id="clearSelection">Clear Selection</button>
+            <!-- Create Practice Worksheet -->
+            <div class="custom-worksheet-section">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                    <span>🎯</span> Create My Practice Worksheet
+                </h3>
+                <p style="margin: 0 0 20px 0; color: #64748b; font-size: 0.9rem;">Select skills from the topics above using the checkboxes, then create a personalized practice worksheet.</p>
+                
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button onclick="generateCustomWorksheet()" style="padding: 10px 20px; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+                        <span>🎯</span> Create My Practice Worksheet
+                    </button>
+                    <button onclick="selectAllSkills()" style="padding: 8px 16px; background: transparent; color: #6366f1; border: 1px solid #6366f1; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        Select All Skills
+                    </button>
+                    <button onclick="clearAllSkills()" style="padding: 8px 16px; background: transparent; color: #64748b; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        Clear Selection
+                    </button>
+                    <button onclick="getHelpWithSkills()" style="padding: 8px 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 4px;">
+                        <span>💡</span> Get Help
+                    </button>
                 </div>
             </div>
+
         </div>
 
-        <!-- Assessment Sections -->
+        <!-- Student Reflection Sections -->
         <div class="assessment-sections">
-            <!-- Teacher's Remarks -->
+            <!-- My Learning Reflection -->
             <div class="section-card">
                 <div class="section-header">
                     <span class="section-number">1</span>
-                    <h3>Teacher's Remarks</h3>
+                    <h3>My Learning Reflection</h3>
                 </div>
                 
                 <div class="remarks-section">
                     <div class="remark-item">
-                        <h4>Confidence</h4>
+                        <h4>How confident do I feel about math?</h4>
                         <div class="selection-buttons">
-                            <button class="selection-btn">Low</button>
-                            <button class="selection-btn">Medium</button>
-                            <button class="selection-btn selected">High</button>
+                            <button class="selection-btn">Not confident</button>
+                            <button class="selection-btn">Somewhat confident</button>
+                            <button class="selection-btn selected">Very confident</button>
                         </div>
                     </div>
                     
                     <div class="remark-item">
-                        <h4>Emotional relationship with math</h4>
+                        <h4>How do I feel about math?</h4>
                         <div class="selection-buttons">
-                            <button class="selection-btn">Dislikes</button>
-                            <button class="selection-btn">Scared</button>
-                            <button class="selection-btn">Indifferent</button>
-                            <button class="selection-btn">Confused</button>
-                            <button class="selection-btn selected">Likes</button>
-                            <button class="selection-btn">Loves</button>
+                            <button class="selection-btn">I don't like it</button>
+                            <button class="selection-btn">It's scary</button>
+                            <button class="selection-btn">It's okay</button>
+                            <button class="selection-btn">It's confusing</button>
+                            <button class="selection-btn selected">I like it</button>
+                            <button class="selection-btn">I love it</button>
                         </div>
                     </div>
                     
                     <div class="remark-item">
-                        <h4>Purpose of math classes</h4>
+                        <h4>What are my math goals?</h4>
                         <div class="selection-buttons">
-                            <button class="selection-btn">Cover basics</button>
-                            <button class="selection-btn selected">Cover current content</button>
-                            <button class="selection-btn selected">Go above and beyond</button>
+                            <button class="selection-btn">Just pass the class</button>
+                            <button class="selection-btn selected">Learn everything well</button>
+                            <button class="selection-btn selected">Challenge myself more</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Cognitive Development -->
+            <!-- My Learning Skills -->
             <div class="section-card">
                 <div class="section-header">
                     <span class="section-number">2</span>
-                    <h3>Cognitive Development</h3>
+                    <h3>My Learning Skills</h3>
                 </div>
                 
                 <div class="cognitive-section">
                     <div class="cognitive-item">
                         <div class="cognitive-label">
                             <span class="cognitive-icon">🧠</span>
-                            <span>Memory and Recall</span>
+                            <span>I remember what I learn</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 85%; background-color: #10b981;"></div>
@@ -818,7 +773,7 @@
                     <div class="cognitive-item">
                         <div class="cognitive-label">
                             <span class="cognitive-icon">📋</span>
-                            <span>Organization of Work</span>
+                            <span>I organize my work well</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 45%; background-color: #f59e0b;"></div>
@@ -828,7 +783,7 @@
                     <div class="cognitive-item">
                         <div class="cognitive-label">
                             <span class="cognitive-icon">🎯</span>
-                            <span>Ability to focus</span>
+                            <span>I can focus and concentrate</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 90%; background-color: #10b981;"></div>
@@ -838,7 +793,7 @@
                     <div class="cognitive-item">
                         <div class="cognitive-label">
                             <span class="cognitive-icon">🔍</span>
-                            <span>Ability to self serve answers</span>
+                            <span>I can figure things out myself</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 60%; background-color: #f59e0b;"></div>
@@ -848,7 +803,7 @@
                     <div class="cognitive-item">
                         <div class="cognitive-label">
                             <span class="cognitive-icon">⚠️</span>
-                            <span>Avoiding careless mistakes</span>
+                            <span>I avoid careless mistakes</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 35%; background-color: #ef4444;"></div>
@@ -858,7 +813,7 @@
                     <div class="cognitive-item">
                         <div class="cognitive-label">
                             <span class="cognitive-icon">💪</span>
-                            <span>Grit/Resilience</span>
+                            <span>I keep trying when things are hard</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 80%; background-color: #10b981;"></div>
@@ -872,7 +827,7 @@
 
     <script src="script.js?v=2"></script>
     <script>
-        console.log('Teacher view loading with questions panel...');
+        console.log('Student view loading...');
         
         // Sample questions data
         const questionsData = {
@@ -994,7 +949,7 @@
             ]
         };
         
-        // Questions panel functionality
+        // Side panel questions view - student dashboard style
         function showQuestions(skillElement) {
             console.log('Skill clicked:', skillElement.dataset.skillId);
             
@@ -1018,7 +973,7 @@
             
             // Show questions panel
             const panel = document.getElementById('questionsPanel');
-            panel.style.display = 'block';
+            panel.style.display = 'block'; // Make sure panel is visible
             const panelContent = panel.querySelector('.panel-content');
             
             if (questions.length === 0) {
@@ -1042,7 +997,7 @@
                         <div class="question-text" style="color: #1e293b; margin-bottom: 15px; line-height: 1.6; font-size: 0.95rem;">${q.question}</div>
                         <div class="answer-section" style="display: grid; gap: 10px;">
                             <div class="student-answer" style="padding: 10px; background: ${q.isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-radius: 6px; border-left: 3px solid ${q.isCorrect ? '#22c55e' : '#ef4444'};">
-                                <strong style="color: #374151;">Student Answer:</strong>
+                                <strong style="color: #374151;">My Answer:</strong>
                                 <span style="color: ${q.isCorrect ? '#16a34a' : '#dc2626'};">${q.studentAnswer}</span>
                             </div>
                             <div class="correct-answer" style="padding: 10px; background: rgba(34, 197, 94, 0.1); border-radius: 6px; border-left: 3px solid #22c55e;">
@@ -1056,7 +1011,7 @@
                 
                 panelContent.innerHTML = `
                     <div class="skill-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;">
-                        <h4 style="margin: 0; color: #1e293b; font-size: 1.1rem;">${skillCode} - Questions</h4>
+                        <h4 style="margin: 0; color: #1e293b; font-size: 1.1rem;">${skillCode} - My Questions</h4>
                         <p style="margin: 5px 0 0 0; color: #64748b; font-size: 0.9rem;">${skillDescription}</p>
                     </div>
                     <div class="questions-list">
@@ -1069,12 +1024,17 @@
             panel.classList.remove('hidden');
         }
         
-        // Close questions panel
+        // Close questions panel - hide the entire panel
         function closeQuestionsPanel() {
             console.log('Closing questions panel');
             const panel = document.getElementById('questionsPanel');
             if (panel) {
                 panel.style.display = 'none';
+                // Adjust main content to full width when panel is closed
+                const mainContent = panel.parentElement;
+                if (mainContent) {
+                    mainContent.style.display = 'block';
+                }
             }
             
             // Remove selection from all skills
@@ -1083,38 +1043,98 @@
             });
         }
         
-        // Add click handlers to skill items
+        // Worksheet functions
+        function openWorksheet(type) {
+            console.log('Opening worksheet:', type);
+            const worksheetTypes = {
+                'homework': 'My Homework Assignments',
+                'practice': 'My Practice Worksheets',
+                'completed': 'My Completed Work',
+                'review': 'Review Worksheets'
+            };
+            
+            alert(`Opening ${worksheetTypes[type]}...\n\nThis would normally show your ${type} worksheets or open them in a new tab.`);
+        }
+        
+        // Custom worksheet functions
+        function generateCustomWorksheet() {
+            const selectedSkills = [];
+            const checkboxes = document.querySelectorAll('.skill-select-checkbox:checked');
+            
+            checkboxes.forEach(checkbox => {
+                selectedSkills.push(checkbox.dataset.skillId);
+            });
+            
+            if (selectedSkills.length === 0) {
+                alert('Please select at least one skill to create a practice worksheet.');
+                return;
+            }
+            
+            console.log('Generating custom worksheet for skills:', selectedSkills);
+            alert(`Creating your practice worksheet for ${selectedSkills.length} selected skills:\n\n${selectedSkills.join('\n')}\n\nThis would normally generate and download a personalized worksheet for you to practice.`);
+        }
+        
+        function selectAllSkills() {
+            const checkboxes = document.querySelectorAll('.skill-select-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        }
+        
+        function clearAllSkills() {
+            const checkboxes = document.querySelectorAll('.skill-select-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+        
+        function getHelpWithSkills() {
+            const selectedSkills = [];
+            const checkboxes = document.querySelectorAll('.skill-select-checkbox:checked');
+            
+            checkboxes.forEach(checkbox => {
+                selectedSkills.push(checkbox.dataset.skillId);
+            });
+            
+            if (selectedSkills.length === 0) {
+                alert('Select some skills first, then click "Get Help" to get study tips and resources for those topics!');
+                return;
+            }
+            
+            alert(`Getting help for ${selectedSkills.length} selected skills!\n\nThis would normally:\n• Show study tips and explanations\n• Provide video tutorials\n• Suggest practice resources\n• Connect you with tutoring help`);
+        }
+        
+        // Add onclick handlers to all skill items
         document.addEventListener('DOMContentLoaded', function() {
             const skillItems = document.querySelectorAll('.skill-item');
             skillItems.forEach(item => {
-                // Add click handler for showing questions
-                item.addEventListener('click', function(e) {
-                    // Don't trigger if clicking on checkbox
-                    if (e.target.type === 'checkbox' || e.target.closest('.skill-checkbox')) {
-                        return;
-                    }
-                    showQuestions(this);
-                });
+                if (!item.onclick) {
+                    item.onclick = function() { showQuestions(this); };
+                }
                 
-                // Add hover effect
-                item.style.cursor = 'pointer';
-                item.addEventListener('mouseenter', function() {
-                    if (!this.classList.contains('selected')) {
-                        this.style.backgroundColor = 'rgba(99, 102, 241, 0.06)';
-                        this.style.transform = 'translateX(2px)';
-                    }
-                });
-                
-                item.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('selected')) {
-                        this.style.backgroundColor = '';
-                        this.style.transform = '';
-                    }
-                });
+                // Also ensure checkboxes stop propagation
+                const checkbox = item.querySelector('.skill-select-checkbox');
+                if (checkbox && !checkbox.onclick) {
+                    checkbox.onclick = function(event) { event.stopPropagation(); };
+                }
             });
             
-            console.log('Teacher view ready with questions panel functionality!');
+            // Add hover effects for worksheet buttons
+            const worksheetBtns = document.querySelectorAll('.worksheet-btn');
+            worksheetBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
         });
+        
+        console.log('Student view ready with questions panel and worksheet functionality!');
     </script>
 </body>
 </html>

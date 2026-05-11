@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Test - Parent Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5dc;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(248, 250, 252, 0.6);
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .skill-item:hover {
+            background: rgba(99, 102, 241, 0.06);
+            transform: translateX(2px);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.12);
+        }
+        
+        .skill-item.selected {
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+            border-color: #6366f1;
+        }
+        
+        .skill-code {
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.9rem;
+            min-width: 100px;
+        }
+        
+        .skill-description {
+            flex: 1;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .skill-status {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .expand-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .expand-btn:hover {
+            background: #4f46e5;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .debug-info h4 {
+            margin: 0 0 10px 0;
+            color: #495057;
+        }
+        
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+        
+        .log-entry.success {
+            color: #28a745;
+        }
+        
+        .log-entry.error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Parent Dashboard Click Test</h1>
+        <p>Testing click functionality on skill items and buttons.</p>
+        
+        <button class="expand-btn" id="testBtn">Test Button Click</button>
+        
+        <h3>Skill Items (Click to test):</h3>
+        
+        <div class="skill-item" data-skill-id="7.RP.A.1">
+            <span class="skill-code">7.RP.A.1</span>
+            <span class="skill-description">Compute unit rates with fractions</span>
+            <div class="skill-status">✅</div>
+        </div>
+        
+        <div class="skill-item" data-skill-id="7.RP.A.2a">
+            <span class="skill-code">7.RP.A.2a</span>
+            <span class="skill-description">Recognize proportional relationships</span>
+            <div class="skill-status">✅</div>
+        </div>
+        
+        <div class="skill-item" data-skill-id="7.RP.A.2b">
+            <span class="skill-code">7.RP.A.2b</span>
+            <span class="skill-description">Identify constant of proportionality</span>
+            <div class="skill-status">📖</div>
+        </div>
+        
+        <div class="skill-item" data-skill-id="7.RP.A.2c">
+            <span class="skill-code">7.RP.A.2c</span>
+            <span class="skill-description">Represent relationships by equations</span>
+            <div class="skill-status">📖</div>
+        </div>
+        
+        <div class="skill-item" data-skill-id="7.RP.A.2d">
+            <span class="skill-code">7.RP.A.2d</span>
+            <span class="skill-description">Explain points on proportional graphs</span>
+            <div class="skill-status">⚠️</div>
+        </div>
+        
+        <div class="debug-info">
+            <h4>Debug Log:</h4>
+            <div id="debugLog">
+                <div class="log-entry">Initializing click test...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Debug logging
+        const debugLog = document.getElementById('debugLog');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${timestamp}] ${message}`;
+            debugLog.appendChild(entry);
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(message);
+        }
+        
+        // Test button click
+        document.getElementById('testBtn').addEventListener('click', function() {
+            log('Test button clicked successfully!', 'success');
+        });
+        
+        // Test skill item clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            log('DOM loaded, setting up skill item listeners...');
+            
+            const skillItems = document.querySelectorAll('.skill-item');
+            log(`Found ${skillItems.length} skill items`);
+            
+            skillItems.forEach((item, index) => {
+                const skillId = item.dataset.skillId;
+                log(`Setting up listener for skill ${index + 1}: ${skillId}`);
+                
+                item.addEventListener('click', function(e) {
+                    log(`Skill item clicked: ${skillId}`, 'success');
+                    
+                    // Remove previous selection
+                    document.querySelectorAll('.skill-item.selected').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Add selection to current item
+                    item.classList.add('selected');
+                    
+                    log(`Selection updated for: ${skillId}`, 'success');
+                });
+                
+                // Test hover
+                item.addEventListener('mouseenter', function() {
+                    log(`Mouse entered: ${skillId}`);
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    log(`Mouse left: ${skillId}`);
+                });
+            });
+            
+            log('All event listeners set up successfully!', 'success');
+        });
+        
+        // Test for any JavaScript errors
+        window.addEventListener('error', function(e) {
+            log(`JavaScript Error: ${e.message}`, 'error');
+        });
+        
+        log('Click test script loaded successfully!', 'success');
+    </script>
+</body>
+</html>

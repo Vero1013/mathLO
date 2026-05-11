@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Parent Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-button { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 10px; 
+            cursor: pointer; 
+            border-radius: 5px;
+        }
+        .test-button:hover { background: #0056b3; }
+        .log { 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .skill-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .skill-item:hover {
+            background: #e9ecef;
+        }
+        .expand-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Parent Dashboard</h1>
+    
+    <div id="log" class="log">Console output will appear here...\n</div>
+    
+    <h2>Test Buttons</h2>
+    <button class="test-button" onclick="testBasicClick()">Test Basic Click</button>
+    <button class="test-button" onclick="testParentAppInit()">Test ParentApp Init</button>
+    <button class="test-button" onclick="openParentView()">Open Parent View</button>
+    
+    <h2>Test Elements</h2>
+    <button class="expand-btn" onclick="testExpandClick(this)">Test Expand Button</button>
+    
+    <div class="skill-item" data-skill-id="test-skill" onclick="testSkillClick(this)">
+        <span class="skill-code">TEST.1</span>
+        <span class="skill-description">Test Skill Item</span>
+    </div>
+    
+    <script>
+        // Capture console.log output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logDiv = document.getElementById('log');
+        
+        function addToLog(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌ ERROR' : '✅ LOG';
+            logDiv.textContent += `[${timestamp}] ${prefix}: ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToLog(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToLog(args.join(' '), 'error');
+        };
+        
+        // Test functions
+        function testBasicClick() {
+            console.log('Basic click test - this should work');
+            alert('Basic click works!');
+        }
+        
+        function testParentAppInit() {
+            console.log('Testing ParentApp initialization...');
+            if (window.parentApp) {
+                console.log('✅ ParentApp is initialized:', typeof window.parentApp);
+            } else {
+                console.error('❌ ParentApp is not initialized');
+            }
+        }
+        
+        function testExpandClick(btn) {
+            console.log('Expand button clicked:', btn);
+            btn.textContent = btn.textContent === 'Test Expand Button' ? 'Expanded!' : 'Test Expand Button';
+        }
+        
+        function testSkillClick(element) {
+            console.log('Skill item clicked:', element.dataset.skillId);
+            element.style.background = element.style.background === 'lightgreen' ? '#f8f9fa' : 'lightgreen';
+        }
+        
+        function openParentView() {
+            console.log('Opening parent view...');
+            window.open('http://localhost:8000/parent-view.html', '_blank');
+        }
+        
+        // Try to load the parent script
+        console.log('Loading debug page...');
+        
+        // Test if we can access the parent view
+        window.addEventListener('load', () => {
+            console.log('Debug page loaded successfully');
+            
+            // Try to load parent script dynamically
+            const script = document.createElement('script');
+            script.src = 'parent-script.js?v=debug';
+            script.onload = () => {
+                console.log('Parent script loaded successfully');
+                setTimeout(() => {
+                    testParentAppInit();
+                }, 1000);
+            };
+            script.onerror = (error) => {
+                console.error('Failed to load parent script:', error);
+            };
+            document.head.appendChild(script);
+        });
+    </script>
+</body>
+</html>
